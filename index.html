@@ -206,9 +206,30 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
 .diff-del{background:rgba(248,113,113,.12);border-left:2px solid var(--rd);padding:2px 8px;margin:2px 0;border-radius:0 3px 3px 0;font-size:11px;color:var(--rd)}
 .diff-same{padding:2px 8px;margin:2px 0;font-size:11px;color:var(--t3)}
 
-/* STICKER / STAMP */
+/* STAMP PREVIEW */
 .stamp-preview{background:var(--s3);border-radius:var(--r);padding:20px;text-align:center;margin:12px 0;min-height:80px;display:flex;align-items:center;justify-content:center}
 .stamp-box{display:inline-block;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:8px 16px;border-radius:4px}
+
+/* SIGNATURE CANVAS */
+.sig-canvas-wrap{background:#fff;border-radius:var(--rs);border:2px dashed var(--bd2);overflow:hidden;position:relative;cursor:crosshair}
+.sig-canvas-wrap canvas{display:block;touch-action:none}
+.sig-tab{display:flex;gap:2px;margin-bottom:10px}
+.sig-tab-btn{padding:6px 14px;font-size:12px;font-weight:600;border:1px solid var(--bd);background:var(--s2);color:var(--t2);border-radius:var(--rs) var(--rs) 0 0;cursor:pointer;transition:all .12s}
+.sig-tab-btn.on{background:var(--acb);color:var(--ac);border-color:var(--ac)}
+.sig-panel{display:none}.sig-panel.on{display:block}
+
+/* REDACT */
+.redact-canvas-wrap{position:relative;overflow:hidden;border-radius:var(--rs);background:var(--s3)}
+.redact-overlay{position:absolute;top:0;left:0;width:100%;height:100%;cursor:crosshair}
+.redact-box{position:absolute;background:rgba(0,0,0,0.7);border:2px dashed #f87171;pointer-events:none}
+.redact-list{display:flex;flex-direction:column;gap:6px;margin:10px 0;max-height:200px;overflow-y:auto}
+.redact-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--rs);font-size:11px;color:var(--t2)}
+.redact-item b{color:var(--t1)}
+
+/* CROP */
+.crop-canvas-wrap{position:relative;display:inline-block;border-radius:var(--rs);overflow:hidden}
+.crop-overlay{position:absolute;top:0;left:0;pointer-events:none}
+.crop-handle{position:absolute;background:var(--ac);border-radius:2px}
 
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
@@ -228,7 +249,7 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
 <body>
 <div class="app">
 <nav>
-  <div class="logo"><div class="logo-mark"><div class="logo-icon">📄</div><h1>PDF Tools Pro</h1></div><span>19 tools · browser only</span></div>
+  <div class="logo"><div class="logo-mark"><div class="logo-icon">📄</div><h1>PDF Tools Pro</h1></div><span>25 tools · browser only</span></div>
   <div class="nav-sec">
     <span class="nav-lbl">Organisasi</span>
     <button class="ni on" onclick="go('merge')"><span class="ni-ic">⊕</span>Merge PDF</button>
@@ -250,10 +271,16 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
     <button class="ni" onclick="go('protect')"><span class="ni-ic">🔐</span>Password PDF</button>
     <button class="ni" onclick="go('textextract')"><span class="ni-ic">📋</span>Extract Teks</button>
     <span class="nav-lbl">✨ Fitur Baru</span>
-    <button class="ni" onclick="go('viewer')"><span class="ni-ic">🔍</span>PDF Viewer <span class="ni-new">NEW</span></button>
-    <button class="ni" onclick="go('pdfinfo')"><span class="ni-ic">📊</span>Info PDF <span class="ni-new">NEW</span></button>
-    <button class="ni" onclick="go('fillform')"><span class="ni-ic">📝</span>Isi Form PDF <span class="ni-new">NEW</span></button>
-    <button class="ni" onclick="go('stamp')"><span class="ni-ic">🔖</span>Stempel PDF <span class="ni-new">NEW</span></button>
+    <button class="ni" onclick="go('viewer')"><span class="ni-ic">🔍</span>PDF Viewer</button>
+    <button class="ni" onclick="go('pdfinfo')"><span class="ni-ic">📊</span>Info PDF</button>
+    <button class="ni" onclick="go('fillform')"><span class="ni-ic">📝</span>Isi Form PDF</button>
+    <button class="ni" onclick="go('stamp')"><span class="ni-ic">🔖</span>Stempel PDF</button>
+    <button class="ni" onclick="go('signature')"><span class="ni-ic">✍️</span>Tanda Tangan <span class="ni-new">NEW</span></button>
+    <button class="ni" onclick="go('redact')"><span class="ni-ic">⬛</span>Sensor/Redact <span class="ni-new">NEW</span></button>
+    <button class="ni" onclick="go('headerfooter')"><span class="ni-ic">📰</span>Header & Footer <span class="ni-new">NEW</span></button>
+    <button class="ni" onclick="go('insertblank')"><span class="ni-ic">➕</span>Sisipkan Halaman <span class="ni-new">NEW</span></button>
+    <button class="ni" onclick="go('duplicate')"><span class="ni-ic">📋</span>Duplikat Halaman <span class="ni-new">NEW</span></button>
+    <button class="ni" onclick="go('crop')"><span class="ni-ic">✂️</span>Crop Halaman <span class="ni-new">NEW</span></button>
   </div>
 </nav>
 
@@ -690,6 +717,234 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEW: TANDA TANGAN / SIGNATURE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page" id="p-signature">
+  <div class="ph"><h2>Tanda Tangan <span class="badge-new">NEW</span></h2><p>Tambahkan tanda tangan ke PDF — gambar langsung, ketik nama, atau upload gambar tanda tangan.</p></div>
+  <div class="dz" id="dz-signature" onclick="tri('fi-signature')"><span class="dz-ic">✍️</span><p>Drop <em>1 file PDF</em> di sini</p><small>Tanda tangan ditempatkan di halaman pilihan</small></div>
+  <input type="file" id="fi-signature" accept=".pdf" style="display:none">
+  <div id="cfg-signature" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="sg-fn"></b></div><div class="chip"><b id="sg-pg"></b> halaman</div></div>
+    <div class="sec">
+      <div class="sec-t">✍️ Buat Tanda Tangan</div>
+      <div class="sig-tab">
+        <button class="sig-tab-btn on" onclick="sigTab('draw')">✏️ Gambar</button>
+        <button class="sig-tab-btn" onclick="sigTab('type')">⌨️ Ketik</button>
+        <button class="sig-tab-btn" onclick="sigTab('upload')">📁 Upload</button>
+      </div>
+      <!-- DRAW -->
+      <div class="sig-panel on" id="sig-draw">
+        <div class="sig-canvas-wrap" style="height:140px">
+          <canvas id="sig-canvas" style="width:100%;height:140px"></canvas>
+        </div>
+        <div class="btns"><button class="btn btn-g btn-sm" onclick="sigClear()">🗑 Bersihkan</button><span style="font-size:11px;color:var(--t3)">Gambar tanda tangan di atas</span></div>
+      </div>
+      <!-- TYPE -->
+      <div class="sig-panel" id="sig-type">
+        <div class="fg"><label>Nama / Tanda tangan</label><input type="text" id="sig-name" placeholder="Nama Anda" oninput="sigTypePreview()"></div>
+        <div class="fg"><label>Gaya font</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div class="oc on" id="sigf-0" onclick="sigFont(0)" style="padding:8px 12px"><span style="font-family:cursive;font-size:16px" id="sigfp-0">Nama</span></div>
+            <div class="oc" id="sigf-1" onclick="sigFont(1)" style="padding:8px 12px"><span style="font-family:serif;font-style:italic;font-size:16px" id="sigfp-1">Nama</span></div>
+            <div class="oc" id="sigf-2" onclick="sigFont(2)" style="padding:8px 12px"><span style="font-family:monospace;font-size:14px" id="sigfp-2">Nama</span></div>
+          </div>
+        </div>
+        <canvas id="sig-type-canvas" style="display:none"></canvas>
+      </div>
+      <!-- UPLOAD -->
+      <div class="sig-panel" id="sig-upload">
+        <div class="dz" id="dz-sigimg" onclick="tri('fi-sigimg')" style="padding:20px"><span class="dz-ic" style="font-size:24px">🖼</span><p>Upload gambar tanda tangan (PNG transparan lebih bagus)</p></div>
+        <input type="file" id="fi-sigimg" accept="image/*" style="display:none">
+        <div id="sig-img-preview" style="display:none;margin-top:10px;text-align:center"><img id="sig-img-el" style="max-height:100px;border-radius:6px;border:1px solid var(--bd2)"></div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-t">📍 Penempatan</div>
+      <div class="grid2">
+        <div class="fg"><label>Halaman</label><input type="number" id="sg-page" value="1" min="1" style="width:100px"></div>
+        <div class="fg"><label>Posisi</label><select id="sg-pos"><option value="br">Kanan Bawah</option><option value="bl">Kiri Bawah</option><option value="tr">Kanan Atas</option><option value="tl">Kiri Atas</option><option value="center">Tengah</option></select></div>
+        <div class="fg"><label>Lebar tanda tangan (pt)</label><input type="number" id="sg-w" value="150" min="50" max="400" style="width:100px"></div>
+        <div class="fg"><label>Offset dari tepi (pt)</label><input type="number" id="sg-margin" value="20" min="0" max="100" style="width:100px"></div>
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="doSignature()">✍️ Tambahkan Tanda Tangan</button>
+    <div class="pw" id="pw-signature" style="display:none"><div class="pb-bg"><div class="pb" id="pb-signature"></div></div><p class="pt" id="pt-signature"></p></div>
+    <div class="rb" id="rb-signature" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p>Tanda tangan berhasil ditambahkan!</p><span id="rb-signature-i"></span></div><button class="rb-dl" id="dl-signature">⬇ Unduh</button></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEW: REDACT / SENSOR -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page" id="p-redact">
+  <div class="ph"><h2>Sensor / Redact <span class="badge-new">NEW</span></h2><p>Tutup area sensitif di PDF dengan kotak hitam permanen — untuk NIK, gaji, nomor rekening, dll.</p></div>
+  <div class="dz" id="dz-redact" onclick="tri('fi-redact')"><span class="dz-ic">⬛</span><p>Drop <em>1 file PDF</em> di sini</p><small>Gambar kotak hitam di atas area yang ingin disensor</small></div>
+  <input type="file" id="fi-redact" accept=".pdf" style="display:none">
+  <div id="cfg-redact" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="rd-fn"></b></div><div class="chip"><b id="rd-pg"></b> halaman</div></div>
+    <div class="sec">
+      <div class="viewer-ctrl">
+        <button class="btn btn-g btn-sm" onclick="rdPrev()">◀</button>
+        <span style="font-size:12px;color:var(--t2)">Hal</span>
+        <input type="number" id="rd-page" value="1" min="1" style="width:55px;text-align:center" onchange="rdGoto()">
+        <span style="font-size:12px;color:var(--t2)">dari <b id="rd-total">0</b></span>
+        <button class="btn btn-g btn-sm" onclick="rdNext()">▶</button>
+        <span style="color:var(--bd2)">|</span>
+        <span style="font-size:12px;color:var(--am)">Klik & drag untuk sensor area</span>
+      </div>
+      <div class="viewer-wrap" style="position:relative;padding:0" id="rd-wrap">
+        <canvas id="rd-canvas" style="max-width:100%;display:block"></canvas>
+        <canvas id="rd-overlay" class="redact-overlay"></canvas>
+      </div>
+      <div style="margin-top:10px">
+        <p style="font-size:11px;color:var(--t2);margin-bottom:6px">Area yang akan disensor (<b id="rd-count">0</b> area):</p>
+        <div class="redact-list" id="rd-list"></div>
+        <div class="btns"><button class="btn btn-d btn-sm" onclick="rdClearAll()">🗑 Hapus semua area</button></div>
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="doRedact()">⬛ Terapkan Sensor Permanen</button>
+    <div style="background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);border-radius:var(--rs);padding:10px 14px;margin-top:8px">
+      <p style="font-size:11px;color:var(--am)">⚠️ Sensor bersifat PERMANEN. Area yang disensor tidak bisa dikembalikan.</p>
+    </div>
+    <div class="pw" id="pw-redact" style="display:none"><div class="pb-bg"><div class="pb" id="pb-redact"></div></div><p class="pt" id="pt-redact"></p></div>
+    <div class="rb" id="rb-redact" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p id="rb-redact-t">Berhasil disensor!</p><span id="rb-redact-i"></span></div><button class="rb-dl" id="dl-redact">⬇ Unduh</button></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEW: HEADER & FOOTER -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page" id="p-headerfooter">
+  <div class="ph"><h2>Header & Footer <span class="badge-new">NEW</span></h2><p>Tambahkan teks kustom di header dan/atau footer setiap halaman PDF — nama perusahaan, tanggal, kode dokumen, dll.</p></div>
+  <div class="dz" id="dz-headerfooter" onclick="tri('fi-headerfooter')"><span class="dz-ic">📰</span><p>Drop <em>1 file PDF</em> di sini</p></div>
+  <input type="file" id="fi-headerfooter" accept=".pdf" style="display:none">
+  <div id="cfg-headerfooter" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="hf-fn"></b></div><div class="chip"><b id="hf-pg"></b> halaman</div></div>
+    <div class="sec">
+      <div class="sec-t">📰 Header (Bagian Atas)</div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--t1);margin-bottom:12px"><input type="checkbox" id="hf-head-on" style="width:auto" checked> Aktifkan header</label>
+      <div class="grid3">
+        <div class="fg"><label>Teks Kiri</label><input type="text" id="hf-hl" placeholder="Nama Perusahaan"></div>
+        <div class="fg"><label>Teks Tengah</label><input type="text" id="hf-hc" placeholder="Judul Dokumen"></div>
+        <div class="fg"><label>Teks Kanan</label><input type="text" id="hf-hr" placeholder="{date}"></div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-t">📄 Footer (Bagian Bawah)</div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--t1);margin-bottom:12px"><input type="checkbox" id="hf-foot-on" style="width:auto" checked> Aktifkan footer</label>
+      <div class="grid3">
+        <div class="fg"><label>Teks Kiri</label><input type="text" id="hf-fl" placeholder="Rahasia"></div>
+        <div class="fg"><label>Teks Tengah</label><input type="text" id="hf-fc" placeholder="{page} / {total}"></div>
+        <div class="fg"><label>Teks Kanan</label><input type="text" id="hf-fr" placeholder="www.perusahaan.com"></div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="grid2">
+        <div class="fg"><label>Ukuran font (pt)</label><input type="number" id="hf-sz" value="9" min="6" max="20" style="width:80px"></div>
+        <div class="fg"><label>Warna</label><input type="color" id="hf-col" value="#444444" style="width:60px;height:36px;border:none;background:none;cursor:pointer"></div>
+        <div class="fg"><label>Margin dari tepi (pt)</label><input type="number" id="hf-margin" value="18" min="5" max="60" style="width:80px"></div>
+        <div class="fg"><label>Lewati halaman</label><input type="text" id="hf-skip" placeholder="cth: 1 (lewati cover)"></div>
+      </div>
+      <div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--rs);padding:10px 12px;margin-top:4px">
+        <p style="font-size:11px;color:var(--t3);margin-bottom:4px">Variabel yang tersedia:</p>
+        <p style="font-size:11px;color:var(--t2);font-family:'Geist Mono',monospace">{page} = nomor halaman · {total} = total halaman · {date} = tanggal hari ini · {filename} = nama file</p>
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="doHeaderFooter()">📰 Tambahkan Header & Footer</button>
+    <div class="pw" id="pw-headerfooter" style="display:none"><div class="pb-bg"><div class="pb" id="pb-headerfooter"></div></div><p class="pt" id="pt-headerfooter"></p></div>
+    <div class="rb" id="rb-headerfooter" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p>Header & footer berhasil ditambahkan!</p><span id="rb-headerfooter-i"></span></div><button class="rb-dl" id="dl-headerfooter">⬇ Unduh</button></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEW: SISIPKAN HALAMAN KOSONG -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page" id="p-insertblank">
+  <div class="ph"><h2>Sisipkan Halaman <span class="badge-new">NEW</span></h2><p>Sisipkan halaman kosong di posisi tertentu dalam PDF — berguna untuk membuat ruang tanda tangan, divider, atau cover.</p></div>
+  <div class="dz" id="dz-insertblank" onclick="tri('fi-insertblank')"><span class="dz-ic">➕</span><p>Drop <em>1 file PDF</em> di sini</p></div>
+  <input type="file" id="fi-insertblank" accept=".pdf" style="display:none">
+  <div id="cfg-insertblank" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="ib-fn"></b></div><div class="chip"><b id="ib-pg"></b> halaman</div></div>
+    <div class="sec">
+      <div class="sec-t">➕ Konfigurasi Sisipan</div>
+      <div class="grid2">
+        <div class="fg"><label>Sisipkan setelah halaman</label><input type="text" id="ib-after" placeholder="Cth: 1, 3, 5 (pisah koma)"><div class="hint">0 = sisipkan di awal dokumen</div></div>
+        <div class="fg"><label>Jumlah halaman per posisi</label><input type="number" id="ib-count" value="1" min="1" max="10" style="width:80px"></div>
+        <div class="fg"><label>Ukuran halaman baru</label><select id="ib-size"><option value="same">Sama dengan halaman sebelumnya</option><option value="a4">A4 (210×297mm)</option><option value="letter">Letter (216×279mm)</option><option value="a3">A3 (297×420mm)</option></select></div>
+        <div class="fg"><label>Orientasi</label><select id="ib-orient"><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select></div>
+      </div>
+      <div class="fg"><label>Warna halaman</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="color" id="ib-color" value="#ffffff" style="width:50px;height:32px;border:none;background:none;cursor:pointer">
+          <span style="font-size:11px;color:var(--t2)">Putih = halaman kosong biasa</span>
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--t1);margin-top:4px"><input type="checkbox" id="ib-label" style="width:auto"> Tambahkan label "Halaman ini sengaja dikosongkan" di tengah</label>
+    </div>
+    <button class="btn btn-p" onclick="doInsertBlank()">➕ Sisipkan Halaman</button>
+    <div class="pw" id="pw-insertblank" style="display:none"><div class="pb-bg"><div class="pb" id="pb-insertblank"></div></div><p class="pt" id="pt-insertblank"></p></div>
+    <div class="rb" id="rb-insertblank" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p id="rb-insertblank-t">Berhasil!</p><span id="rb-insertblank-i"></span></div><button class="rb-dl" id="dl-insertblank">⬇ Unduh</button></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEW: DUPLIKAT HALAMAN -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page" id="p-duplicate">
+  <div class="ph"><h2>Duplikat Halaman <span class="badge-new">NEW</span></h2><p>Duplikat halaman tertentu dalam PDF — berguna untuk template, formulir yang diulang, atau backup halaman.</p></div>
+  <div class="dz" id="dz-duplicate" onclick="tri('fi-duplicate')"><span class="dz-ic">📋</span><p>Drop <em>1 file PDF</em> di sini</p></div>
+  <input type="file" id="fi-duplicate" accept=".pdf" style="display:none">
+  <div id="cfg-duplicate" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="dup-fn"></b></div><div class="chip"><b id="dup-pg"></b> halaman</div></div>
+    <div class="sec">
+      <div class="fg"><label>Halaman yang diduplikat (pisah koma, bisa rentang)</label><input type="text" id="dup-pages" placeholder="Cth: 1, 3-5, 8"><div class="hint">Halaman-halaman ini akan diduplikat sesuai jumlah copy</div></div>
+      <div class="grid2">
+        <div class="fg"><label>Jumlah copy</label><input type="number" id="dup-n" value="1" min="1" max="20" style="width:80px"><div class="hint">Misal: 2 = tiap halaman muncul 3x total</div></div>
+        <div class="fg"><label>Posisi copy</label><select id="dup-pos"><option value="after">Langsung setelah halaman asli</option><option value="end">Di akhir dokumen</option></select></div>
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="doDuplicate()">📋 Duplikat Sekarang</button>
+    <div class="pw" id="pw-duplicate" style="display:none"><div class="pb-bg"><div class="pb" id="pb-duplicate"></div></div><p class="pt" id="pt-duplicate"></p></div>
+    <div class="rb" id="rb-duplicate" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p id="rb-duplicate-t">Berhasil!</p><span id="rb-duplicate-i"></span></div><button class="rb-dl" id="dl-duplicate">⬇ Unduh</button></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEW: CROP HALAMAN -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page" id="p-crop">
+  <div class="ph"><h2>Crop Halaman <span class="badge-new">NEW</span></h2><p>Potong margin atau area halaman PDF. Berguna untuk menghapus margin besar dari dokumen scan.</p></div>
+  <div class="dz" id="dz-crop" onclick="tri('fi-crop')"><span class="dz-ic">✂️</span><p>Drop <em>1 file PDF</em> di sini</p></div>
+  <input type="file" id="fi-crop" accept=".pdf" style="display:none">
+  <div id="cfg-crop" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="cr-fn"></b></div><div class="chip"><b id="cr-pg"></b> halaman</div><div class="chip">Ukuran: <b id="cr-size"></b></div></div>
+    <div class="sec">
+      <div class="sec-t">✂️ Mode Crop</div>
+      <div class="grid2" style="margin-bottom:14px">
+        <div class="oc on" id="crop-manual" onclick="setCropMode('manual')"><h4>📐 Manual (masukkan nilai)</h4><p>Tentukan margin yang dipotong secara presisi</p></div>
+        <div class="oc" id="crop-trim" onclick="setCropMode('trim')"><h4>🔲 Trim Margin Seragam</h4><p>Potong margin yang sama di semua sisi</p></div>
+      </div>
+      <div id="crop-cfg-manual">
+        <p style="font-size:11px;color:var(--t2);margin-bottom:10px">Masukkan berapa poin yang dipotong dari setiap sisi (1 pt ≈ 0.35mm):</p>
+        <div class="grid4">
+          <div class="fg"><label>Atas (pt)</label><input type="number" id="cr-top" value="0" min="0"></div>
+          <div class="fg"><label>Bawah (pt)</label><input type="number" id="cr-bot" value="0" min="0"></div>
+          <div class="fg"><label>Kiri (pt)</label><input type="number" id="cr-left" value="0" min="0"></div>
+          <div class="fg"><label>Kanan (pt)</label><input type="number" id="cr-right" value="0" min="0"></div>
+        </div>
+      </div>
+      <div id="crop-cfg-trim" style="display:none">
+        <div class="fg"><label>Potong dari semua sisi (pt)</label><input type="number" id="cr-all" value="36" min="0" style="width:100px"><div class="hint">36pt ≈ 1.27cm — cocok untuk scan dengan border besar</div></div>
+      </div>
+      <div class="fg" style="margin-top:10px"><label>Halaman yang di-crop (kosong = semua)</label><input type="text" id="cr-pages" placeholder="Kosong = semua. Cth: 1, 3, 5-8"></div>
+    </div>
+    <button class="btn btn-p" onclick="doCrop()">✂️ Crop Sekarang</button>
+    <div class="pw" id="pw-crop" style="display:none"><div class="pb-bg"><div class="pb" id="pb-crop"></div></div><p class="pt" id="pt-crop"></p></div>
+    <div class="rb" id="rb-crop" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p id="rb-crop-t">Berhasil di-crop!</p><span id="rb-crop-i"></span></div><button class="rb-dl" id="dl-crop">⬇ Unduh</button></div>
+  </div>
+</div>
+
 </main>
 </div>
 
@@ -717,6 +972,12 @@ const S={
   pdfinfo:{file:null,buf:null},
   fillform:{file:null,buf:null,fields:[]},
   stamp:{file:null,buf:null,pages:0},
+  signature:{file:null,buf:null,pages:0,sigData:null,sigMode:'draw'},
+  redact:{file:null,buf:null,pages:0,cur:1,zoom:1.2,pdfJs:null,boxes:[]},
+  headerfooter:{file:null,buf:null,pages:0},
+  insertblank:{file:null,buf:null,pages:0},
+  duplicate:{file:null,buf:null,pages:0},
+  crop:{file:null,buf:null,pages:0},
 };
 
 // ── NAV ──
@@ -1696,6 +1957,459 @@ async function doStamp(){
   document.getElementById('rb-stamp-i').textContent=`${targetPages.length} halaman distempel · ${fmt(bytes.byteLength)}`;
   document.getElementById('dl-stamp').onclick=()=>dlB(bytes,S.stamp.file.name.replace(/\.pdf$/i,'')+'_stamped.pdf');
   showRB('stamp');
+}
+
+// ═══════════════════════════════════════════
+// NEW: TANDA TANGAN / SIGNATURE
+// ═══════════════════════════════════════════
+setupDZ('dz-signature','fi-signature',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.signature.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.signature.buf=buf;const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+    S.signature.pages=pdf.getPageCount();
+    document.getElementById('sg-fn').textContent=f.name;
+    document.getElementById('sg-pg').textContent=S.signature.pages;
+    document.getElementById('sg-page').max=S.signature.pages;
+    document.getElementById('cfg-signature').style.display='block';hideRB('signature');
+    initSigCanvas();
+  });
+});
+function sigTab(t){
+  S.signature.sigMode=t;
+  document.querySelectorAll('.sig-tab-btn').forEach((b,i)=>b.classList.toggle('on',['draw','type','upload'][i]===t));
+  document.querySelectorAll('.sig-panel').forEach((p,i)=>p.classList.toggle('on',['draw','type','upload'][i]===t));
+}
+let sigDrawing=false,sigCtx=null;
+function initSigCanvas(){
+  const canvas=document.getElementById('sig-canvas');
+  const wrap=canvas.parentElement;
+  canvas.width=wrap.offsetWidth||600;canvas.height=140;
+  sigCtx=canvas.getContext('2d');
+  sigCtx.fillStyle='#fff';sigCtx.fillRect(0,0,canvas.width,canvas.height);
+  sigCtx.strokeStyle='#1a1a1a';sigCtx.lineWidth=2.5;sigCtx.lineCap='round';sigCtx.lineJoin='round';
+  const getPos=e=>{const r=canvas.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*(canvas.width/r.width),y:(t.clientY-r.top)*(canvas.height/r.height)};};
+  canvas.addEventListener('mousedown',e=>{sigDrawing=true;const p=getPos(e);sigCtx.beginPath();sigCtx.moveTo(p.x,p.y);});
+  canvas.addEventListener('mousemove',e=>{if(!sigDrawing)return;const p=getPos(e);sigCtx.lineTo(p.x,p.y);sigCtx.stroke();});
+  canvas.addEventListener('mouseup',()=>sigDrawing=false);
+  canvas.addEventListener('touchstart',e=>{e.preventDefault();sigDrawing=true;const p=getPos(e);sigCtx.beginPath();sigCtx.moveTo(p.x,p.y);},{passive:false});
+  canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!sigDrawing)return;const p=getPos(e);sigCtx.lineTo(p.x,p.y);sigCtx.stroke();},{passive:false});
+  canvas.addEventListener('touchend',()=>sigDrawing=false);
+}
+function sigClear(){const c=document.getElementById('sig-canvas');sigCtx.fillStyle='#fff';sigCtx.fillRect(0,0,c.width,c.height);}
+let sigFontIdx=0;
+const sigFonts=['cursive','italic serif','monospace'];
+function sigFont(i){sigFontIdx=i;[0,1,2].forEach(j=>document.getElementById('sigf-'+j).classList.toggle('on',j===i));}
+function sigTypePreview(){
+  const name=document.getElementById('sig-name').value;
+  [0,1,2].forEach(i=>{const el=document.getElementById('sigfp-'+i);if(el)el.textContent=name||'Nama';});
+}
+// Upload sig image
+document.getElementById('fi-sigimg').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  const url=URL.createObjectURL(f);
+  document.getElementById('sig-img-el').src=url;
+  document.getElementById('sig-img-preview').style.display='block';
+  S.signature.uploadUrl=url;e.target.value='';
+});
+document.getElementById('dz-sigimg').addEventListener('dragover',e=>{e.preventDefault();});
+document.getElementById('dz-sigimg').addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/')){document.getElementById('fi-sigimg').dispatchEvent(Object.assign(new Event('change'),{target:{files:[f]}}));}});
+
+async function getSigImageBytes(){
+  const mode=S.signature.sigMode;
+  if(mode==='draw'){
+    const c=document.getElementById('sig-canvas');
+    return await new Promise(r=>{c.toBlob(b=>{b.arrayBuffer().then(r);},  'image/png');});
+  }else if(mode==='type'){
+    const name=document.getElementById('sig-name').value||'Tanda Tangan';
+    const fontMap=['cursive','italic 32px Georgia,serif','18px monospace'];
+    const c=document.createElement('canvas');c.width=400;c.height=120;
+    const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,400,120);
+    ctx.fillStyle='#111';
+    if(sigFontIdx===0){ctx.font='36px cursive';}
+    else if(sigFontIdx===1){ctx.font='italic 36px Georgia,serif';}
+    else{ctx.font='28px monospace';}
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(name,200,60);
+    return await new Promise(r=>{c.toBlob(b=>{b.arrayBuffer().then(r);},'image/png');});
+  }else if(mode==='upload'&&S.signature.uploadUrl){
+    const resp=await fetch(S.signature.uploadUrl);return await resp.arrayBuffer();
+  }
+  return null;
+}
+async function doSignature(){
+  if(!S.signature.buf)return;hideRB('signature');showP('signature');setP('signature',10,'Memuat...');
+  try{
+    const imgBuf=await getSigImageBytes();
+    if(!imgBuf){setP('signature',0,'Buat atau upload tanda tangan dulu!');return;}
+    const {PDFDocument}=PDFLib;
+    const src=await PDFDocument.load(S.signature.buf,{ignoreEncryption:true});
+    setP('signature',40,'Menyisipkan tanda tangan...');await tick();
+    let img;try{img=await src.embedPng(imgBuf);}catch(e){try{img=await src.embedJpg(imgBuf);}catch(e2){setP('signature',0,'Format gambar tidak didukung');return;}}
+    const pgIdx=Math.max(0,Math.min(parseInt(document.getElementById('sg-page').value)||1,src.getPageCount())-1);
+    const page=src.getPage(pgIdx);
+    const{width,height}=page.getSize();
+    const sigW=parseInt(document.getElementById('sg-w').value)||150;
+    const aspect=img.height/img.width;const sigH=sigW*aspect;
+    const margin=parseInt(document.getElementById('sg-margin').value)||20;
+    const pos=document.getElementById('sg-pos').value;
+    let x,y;
+    if(pos==='br'){x=width-sigW-margin;y=margin;}
+    else if(pos==='bl'){x=margin;y=margin;}
+    else if(pos==='tr'){x=width-sigW-margin;y=height-sigH-margin;}
+    else if(pos==='tl'){x=margin;y=height-sigH-margin;}
+    else{x=(width-sigW)/2;y=(height-sigH)/2;}
+    page.drawImage(img,{x,y,width:sigW,height:sigH});
+    setP('signature',80,'Menyimpan...');await tick();
+    const bytes=await src.save();setP('signature',100,'Selesai ✓');
+    document.getElementById('rb-signature-i').textContent=`Halaman ${pgIdx+1} · ${fmt(bytes.byteLength)}`;
+    document.getElementById('dl-signature').onclick=()=>dlB(bytes,S.signature.file.name.replace(/\.pdf$/i,'')+'_signed.pdf');
+    showRB('signature');
+  }catch(e){setP('signature',0,'Error: '+e.message);}
+}
+
+// ═══════════════════════════════════════════
+// NEW: REDACT / SENSOR
+// ═══════════════════════════════════════════
+setupDZ('dz-redact','fi-redact',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.redact.file=f;S.redact.boxes=[];S.redact.cur=1;
+  f.arrayBuffer().then(async buf=>{
+    S.redact.buf=buf;
+    S.redact.pdfJs=await pdfjsLib.getDocument({data:buf.slice(0)}).promise;
+    S.redact.pages=S.redact.pdfJs.numPages;
+    document.getElementById('rd-fn').textContent=f.name;
+    document.getElementById('rd-pg').textContent=S.redact.pages;
+    document.getElementById('rd-total').textContent=S.redact.pages;
+    document.getElementById('rd-page').max=S.redact.pages;
+    document.getElementById('cfg-redact').style.display='block';hideRB('redact');
+    rdRender();
+    rdSetupDraw();
+  });
+});
+async function rdRender(){
+  const page=await S.redact.pdfJs.getPage(S.redact.cur);
+  const wrap=document.getElementById('rd-wrap');
+  const containerW=wrap.clientWidth||700;
+  const baseVP=page.getViewport({scale:1});
+  S.redact.scale=Math.min(containerW/baseVP.width,1.6);
+  const vp=page.getViewport({scale:S.redact.scale});
+  const canvas=document.getElementById('rd-canvas');
+  canvas.width=vp.width;canvas.height=vp.height;
+  await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+  // Sync overlay
+  const overlay=document.getElementById('rd-overlay');
+  overlay.width=vp.width;overlay.height=vp.height;
+  overlay.style.width=canvas.offsetWidth+'px';overlay.style.height=canvas.offsetHeight+'px';
+  rdDrawOverlay();
+  document.getElementById('rd-page').value=S.redact.cur;
+}
+function rdDrawOverlay(){
+  const overlay=document.getElementById('rd-overlay');
+  const ctx=overlay.getContext('2d');
+  ctx.clearRect(0,0,overlay.width,overlay.height);
+  S.redact.boxes.filter(b=>b.page===S.redact.cur).forEach(b=>{
+    ctx.fillStyle='rgba(0,0,0,0.85)';
+    ctx.fillRect(b.x*S.redact.scale,b.y*S.redact.scale,b.w*S.redact.scale,b.h*S.redact.scale);
+  });
+}
+function rdSetupDraw(){
+  const overlay=document.getElementById('rd-overlay');
+  let drawing=false,startX=0,startY=0;
+  const getPos=e=>{const r=overlay.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};};
+  overlay.addEventListener('mousedown',e=>{drawing=true;const p=getPos(e);startX=p.x;startY=p.y;});
+  overlay.addEventListener('mousemove',e=>{
+    if(!drawing)return;
+    const p=getPos(e);
+    rdDrawOverlay();
+    const ctx=overlay.getContext('2d');
+    ctx.fillStyle='rgba(0,0,0,0.7)';
+    ctx.fillRect(startX,startY,p.x-startX,p.y-startY);
+    ctx.strokeStyle='#f87171';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+    ctx.strokeRect(startX,startY,p.x-startX,p.y-startY);
+  });
+  overlay.addEventListener('mouseup',e=>{
+    if(!drawing)return;drawing=false;
+    const p=getPos(e);
+    const w=p.x-startX,h=p.y-startY;
+    if(Math.abs(w)>8&&Math.abs(h)>8){
+      S.redact.boxes.push({page:S.redact.cur,x:Math.min(startX,p.x)/S.redact.scale,y:Math.min(startY,p.y)/S.redact.scale,w:Math.abs(w)/S.redact.scale,h:Math.abs(h)/S.redact.scale});
+      rdUpdateList();rdDrawOverlay();
+    }
+  });
+}
+function rdUpdateList(){
+  const list=document.getElementById('rd-list');
+  list.innerHTML='';
+  document.getElementById('rd-count').textContent=S.redact.boxes.length;
+  S.redact.boxes.forEach((b,i)=>{
+    const row=document.createElement('div');row.className='redact-item';
+    row.innerHTML=`<span>📄 Hal ${b.page}</span><b>Posisi: ${Math.round(b.x)},${Math.round(b.y)} — ${Math.round(b.w)}×${Math.round(b.h)}pt</b><button class="fr-del" onclick="S.redact.boxes.splice(${i},1);rdUpdateList();rdDrawOverlay()" style="margin-left:auto">×</button>`;
+    list.appendChild(row);
+  });
+}
+function rdClearAll(){S.redact.boxes=[];rdUpdateList();rdDrawOverlay();}
+function rdPrev(){if(S.redact.cur>1){S.redact.cur--;rdRender();}}
+function rdNext(){if(S.redact.cur<S.redact.pages){S.redact.cur++;rdRender();}}
+function rdGoto(){const n=parseInt(document.getElementById('rd-page').value);if(n>=1&&n<=S.redact.pages){S.redact.cur=n;rdRender();}}
+async function doRedact(){
+  if(!S.redact.buf||!S.redact.boxes.length){alert('Gambar area yang ingin disensor terlebih dahulu!');return;}
+  hideRB('redact');showP('redact');setP('redact',10,'Memuat...');
+  try{
+    const {PDFDocument,rgb}=PDFLib;
+    const src=await PDFDocument.load(S.redact.buf,{ignoreEncryption:true});
+    setP('redact',50,'Menerapkan sensor...');await tick();
+    S.redact.boxes.forEach(b=>{
+      const page=src.getPage(b.page-1);
+      const{height}=page.getSize();
+      // PDF coords: y from bottom, so flip
+      page.drawRectangle({x:b.x,y:height-b.y-b.h,width:b.w,height:b.h,color:rgb(0,0,0)});
+    });
+    setP('redact',80,'Menyimpan...');await tick();
+    const bytes=await src.save();setP('redact',100,'Selesai ✓');
+    document.getElementById('rb-redact-t').textContent=`${S.redact.boxes.length} area berhasil disensor!`;
+    document.getElementById('rb-redact-i').textContent=fmt(bytes.byteLength);
+    document.getElementById('dl-redact').onclick=()=>dlB(bytes,S.redact.file.name.replace(/\.pdf$/i,'')+'_redacted.pdf');
+    showRB('redact');
+  }catch(e){setP('redact',0,'Error: '+e.message);}
+}
+
+// ═══════════════════════════════════════════
+// NEW: HEADER & FOOTER
+// ═══════════════════════════════════════════
+setupDZ('dz-headerfooter','fi-headerfooter',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.headerfooter.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.headerfooter.buf=buf;const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+    S.headerfooter.pages=pdf.getPageCount();
+    document.getElementById('hf-fn').textContent=f.name;
+    document.getElementById('hf-pg').textContent=S.headerfooter.pages;
+    document.getElementById('cfg-headerfooter').style.display='block';hideRB('headerfooter');
+  });
+});
+async function doHeaderFooter(){
+  if(!S.headerfooter.buf)return;hideRB('headerfooter');showP('headerfooter');setP('headerfooter',10,'Memuat...');
+  const {PDFDocument,rgb,StandardFonts}=PDFLib;
+  const src=await PDFDocument.load(S.headerfooter.buf,{ignoreEncryption:true});
+  const total=src.getPageCount();
+  const sz=parseInt(document.getElementById('hf-sz').value)||9;
+  const margin=parseInt(document.getElementById('hf-margin').value)||18;
+  const hex=document.getElementById('hf-col').value;
+  const cr=parseInt(hex.slice(1,3),16)/255,cg=parseInt(hex.slice(3,5),16)/255,cb=parseInt(hex.slice(5,7),16)/255;
+  const color=rgb(cr,cg,cb);
+  const font=await src.embedFont(StandardFonts.Helvetica);
+  const headOn=document.getElementById('hf-head-on').checked;
+  const footOn=document.getElementById('hf-foot-on').checked;
+  const skipSet=new Set(document.getElementById('hf-skip').value?parsePages(document.getElementById('hf-skip').value,total).map(p=>p-1):[]);
+  const today=new Date().toLocaleDateString('id-ID',{year:'numeric',month:'long',day:'numeric'});
+  const fname=S.headerfooter.file.name.replace(/\.pdf$/i,'');
+  function resolve(tmpl,idx){return(tmpl||'').replace(/{page}/g,idx+1).replace(/{total}/g,total).replace(/{date}/g,today).replace(/{filename}/g,fname);}
+  const pages=src.getPages();
+  setP('headerfooter',40,'Menambahkan...');await tick();
+  pages.forEach((page,idx)=>{
+    if(skipSet.has(idx))return;
+    const{width,height}=page.getSize();
+    const drawLine=(left,center,right,yPos)=>{
+      [[left,'l'],[center,'c'],[right,'r']].forEach(([txt,align])=>{
+        const t=resolve(txt,idx);if(!t)return;
+        const tw=font.widthOfTextAtSize(t,sz);
+        let x;
+        if(align==='l')x=margin;
+        else if(align==='c')x=(width-tw)/2;
+        else x=width-tw-margin;
+        page.drawText(t,{x,y:yPos,size:sz,font,color});
+      });
+    };
+    if(headOn)drawLine(document.getElementById('hf-hl').value,document.getElementById('hf-hc').value,document.getElementById('hf-hr').value,height-margin-sz);
+    if(footOn)drawLine(document.getElementById('hf-fl').value,document.getElementById('hf-fc').value,document.getElementById('hf-fr').value,margin);
+  });
+  setP('headerfooter',80,'Menyimpan...');await tick();
+  const bytes=await src.save();setP('headerfooter',100,'Selesai ✓');
+  document.getElementById('rb-headerfooter-i').textContent=`${total-skipSet.size} halaman · ${fmt(bytes.byteLength)}`;
+  document.getElementById('dl-headerfooter').onclick=()=>dlB(bytes,S.headerfooter.file.name.replace(/\.pdf$/i,'')+'_hf.pdf');
+  showRB('headerfooter');
+}
+
+// ═══════════════════════════════════════════
+// NEW: SISIPKAN HALAMAN KOSONG
+// ═══════════════════════════════════════════
+setupDZ('dz-insertblank','fi-insertblank',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.insertblank.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.insertblank.buf=buf;const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+    S.insertblank.pages=pdf.getPageCount();
+    document.getElementById('ib-fn').textContent=f.name;
+    document.getElementById('ib-pg').textContent=S.insertblank.pages;
+    document.getElementById('cfg-insertblank').style.display='block';hideRB('insertblank');
+  });
+});
+async function doInsertBlank(){
+  if(!S.insertblank.buf)return;hideRB('insertblank');showP('insertblank');setP('insertblank',10,'Memuat...');
+  try{
+    const {PDFDocument,rgb,StandardFonts}=PDFLib;
+    const src=await PDFDocument.load(S.insertblank.buf,{ignoreEncryption:true});
+    const afterStr=document.getElementById('ib-after').value.trim();
+    const positions=afterStr?afterStr.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n)).sort((a,b)=>b-a):[0];
+    const count=parseInt(document.getElementById('ib-count').value)||1;
+    const sizeMode=document.getElementById('ib-size').value;
+    const orient=document.getElementById('ib-orient').value;
+    const colorHex=document.getElementById('ib-color').value;
+    const addLabel=document.getElementById('ib-label').checked;
+    const cr2=parseInt(colorHex.slice(1,3),16)/255,cg2=parseInt(colorHex.slice(3,5),16)/255,cb2=parseInt(colorHex.slice(5,7),16)/255;
+    const sizeMap={a4:[595,842],letter:[612,792],a3:[842,1191]};
+    setP('insertblank',40,'Menyisipkan...');await tick();
+    const font=addLabel?await src.embedFont(StandardFonts.Helvetica):null;
+    // Build new doc with insertions
+    const newDoc=await PDFDocument.create();
+    const allPages=src.getPages();
+    const insertAfter=new Set(positions);
+    const copied=await newDoc.copyPages(src,src.getPageIndices());
+    let insertCount=0;
+    // Process positions sorted descending already, rebuild ascending
+    const sortedPos=positions.slice().sort((a,b)=>a-b);
+    let curSrcIdx=0;
+    const insertMap=new Map();sortedPos.forEach(p=>insertMap.set(p,(insertMap.get(p)||0)+1));
+    // Rebuild: insert 0-pos at start, then page by page
+    if(insertMap.has(0)){
+      for(let k=0;k<(insertMap.get(0)||1)*count;k++){
+        let pw,ph;
+        if(sizeMode==='same'&&allPages.length){const{width,height}=allPages[0].getSize();pw=width;ph=height;}
+        else{[pw,ph]=sizeMap[sizeMode]||sizeMap.a4;if(orient==='landscape')[pw,ph]=[ph,pw];}
+        const bp=newDoc.addPage([pw,ph]);
+        bp.drawRectangle({x:0,y:0,width:pw,height:ph,color:rgb(cr2,cg2,cb2)});
+        if(addLabel&&font){const txt='Halaman ini sengaja dikosongkan';const tw=font.widthOfTextAtSize(txt,10);bp.drawText(txt,{x:(pw-tw)/2,y:ph/2,size:10,font,color:rgb(0.6,0.6,0.6)});}
+        insertCount++;
+      }
+    }
+    for(let i=0;i<copied.length;i++){
+      newDoc.addPage(copied[i]);
+      if(insertMap.has(i+1)){
+        for(let k=0;k<(insertMap.get(i+1)||1)*count;k++){
+          let pw,ph;
+          if(sizeMode==='same'){const{width,height}=allPages[i].getSize();pw=width;ph=height;}
+          else{[pw,ph]=sizeMap[sizeMode]||sizeMap.a4;if(orient==='landscape')[pw,ph]=[ph,pw];}
+          const bp=newDoc.addPage([pw,ph]);
+          bp.drawRectangle({x:0,y:0,width:pw,height:ph,color:rgb(cr2,cg2,cb2)});
+          if(addLabel&&font){const txt='Halaman ini sengaja dikosongkan';const tw=font.widthOfTextAtSize(txt,10);bp.drawText(txt,{x:(pw-tw)/2,y:ph/2,size:10,font,color:rgb(0.6,0.6,0.6)});}
+          insertCount++;
+        }
+      }
+    }
+    setP('insertblank',80,'Menyimpan...');await tick();
+    const bytes=await newDoc.save();setP('insertblank',100,'Selesai ✓');
+    document.getElementById('rb-insertblank-t').textContent=`${insertCount} halaman kosong berhasil disisipkan!`;
+    document.getElementById('rb-insertblank-i').textContent=`Total ${newDoc.getPageCount()} halaman · ${fmt(bytes.byteLength)}`;
+    document.getElementById('dl-insertblank').onclick=()=>dlB(bytes,S.insertblank.file.name.replace(/\.pdf$/i,'')+'_inserted.pdf');
+    showRB('insertblank');
+  }catch(e){setP('insertblank',0,'Error: '+e.message);}
+}
+
+// ═══════════════════════════════════════════
+// NEW: DUPLIKAT HALAMAN
+// ═══════════════════════════════════════════
+setupDZ('dz-duplicate','fi-duplicate',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.duplicate.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.duplicate.buf=buf;const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+    S.duplicate.pages=pdf.getPageCount();
+    document.getElementById('dup-fn').textContent=f.name;
+    document.getElementById('dup-pg').textContent=S.duplicate.pages;
+    document.getElementById('cfg-duplicate').style.display='block';hideRB('duplicate');
+  });
+});
+async function doDuplicate(){
+  if(!S.duplicate.buf)return;hideRB('duplicate');showP('duplicate');setP('duplicate',10,'Memuat...');
+  try{
+    const {PDFDocument}=PDFLib;
+    const src=await PDFDocument.load(S.duplicate.buf,{ignoreEncryption:true});
+    const total=src.getPageCount();
+    const targets=parsePages(document.getElementById('dup-pages').value,total).map(p=>p-1);
+    if(!targets.length){setP('duplicate',0,'Masukkan nomor halaman!');return;}
+    const n=parseInt(document.getElementById('dup-n').value)||1;
+    const pos=document.getElementById('dup-pos').value;
+    setP('duplicate',40,'Menduplikat...');await tick();
+    const newDoc=await PDFDocument.create();
+    if(pos==='end'){
+      const all=await newDoc.copyPages(src,src.getPageIndices());
+      all.forEach(p=>newDoc.addPage(p));
+      for(let k=0;k<n;k++){
+        const dups=await newDoc.copyPages(src,targets);
+        dups.forEach(p=>newDoc.addPage(p));
+      }
+    }else{
+      // Insert copies right after each original
+      const targetSet=new Set(targets);
+      const allIdx=src.getPageIndices();
+      for(let i=0;i<allIdx.length;i++){
+        const [orig]=await newDoc.copyPages(src,[allIdx[i]]);newDoc.addPage(orig);
+        if(targetSet.has(i)){
+          for(let k=0;k<n;k++){const[dup]=await newDoc.copyPages(src,[allIdx[i]]);newDoc.addPage(dup);}
+        }
+      }
+    }
+    setP('duplicate',80,'Menyimpan...');await tick();
+    const bytes=await newDoc.save();setP('duplicate',100,'Selesai ✓');
+    const added=targets.length*n;
+    document.getElementById('rb-duplicate-t').textContent=`${added} salinan halaman berhasil dibuat!`;
+    document.getElementById('rb-duplicate-i').textContent=`Total ${newDoc.getPageCount()} halaman · ${fmt(bytes.byteLength)}`;
+    document.getElementById('dl-duplicate').onclick=()=>dlB(bytes,S.duplicate.file.name.replace(/\.pdf$/i,'')+'_duplicated.pdf');
+    showRB('duplicate');
+  }catch(e){setP('duplicate',0,'Error: '+e.message);}
+}
+
+// ═══════════════════════════════════════════
+// NEW: CROP HALAMAN
+// ═══════════════════════════════════════════
+setupDZ('dz-crop','fi-crop',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.crop.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.crop.buf=buf;const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+    S.crop.pages=pdf.getPageCount();
+    const p0=pdf.getPage(0);const{width,height}=p0.getSize();
+    document.getElementById('cr-fn').textContent=f.name;
+    document.getElementById('cr-pg').textContent=S.crop.pages;
+    document.getElementById('cr-size').textContent=`${Math.round(width)}×${Math.round(height)}pt`;
+    document.getElementById('cfg-crop').style.display='block';hideRB('crop');
+  });
+});
+let cropMode='manual';
+function setCropMode(m){
+  cropMode=m;
+  document.getElementById('crop-manual').classList.toggle('on',m==='manual');
+  document.getElementById('crop-trim').classList.toggle('on',m==='trim');
+  document.getElementById('crop-cfg-manual').style.display=m==='manual'?'block':'none';
+  document.getElementById('crop-cfg-trim').style.display=m==='trim'?'block':'none';
+}
+async function doCrop(){
+  if(!S.crop.buf)return;hideRB('crop');showP('crop');setP('crop',10,'Memuat...');
+  try{
+    const {PDFDocument}=PDFLib;
+    const src=await PDFDocument.load(S.crop.buf,{ignoreEncryption:true});
+    const total=src.getPageCount();
+    const pagesInp=document.getElementById('cr-pages').value.trim();
+    const targetIdxs=pagesInp?parsePages(pagesInp,total).map(p=>p-1):[...Array(total).keys()];
+    const targetSet=new Set(targetIdxs);
+    let top,bot,left,right;
+    if(cropMode==='trim'){const all=parseInt(document.getElementById('cr-all').value)||36;top=bot=left=right=all;}
+    else{top=parseInt(document.getElementById('cr-top').value)||0;bot=parseInt(document.getElementById('cr-bot').value)||0;left=parseInt(document.getElementById('cr-left').value)||0;right=parseInt(document.getElementById('cr-right').value)||0;}
+    setP('crop',50,'Crop halaman...');await tick();
+    src.getPages().forEach((page,i)=>{
+      if(!targetSet.has(i))return;
+      const{width,height}=page.getSize();
+      // Set crop box (MediaBox modification)
+      page.setMediaBox(left,bot,width-left-right,height-top-bot);
+      page.setCropBox(left,bot,width-left-right,height-top-bot);
+    });
+    setP('crop',80,'Menyimpan...');await tick();
+    const bytes=await src.save();setP('crop',100,'Selesai ✓');
+    document.getElementById('rb-crop-t').textContent=`${targetIdxs.length} halaman berhasil di-crop!`;
+    document.getElementById('rb-crop-i').textContent=`Dipotong: atas ${top}pt, bawah ${bot}pt, kiri ${left}pt, kanan ${right}pt · ${fmt(bytes.byteLength)}`;
+    document.getElementById('dl-crop').onclick=()=>dlB(bytes,S.crop.file.name.replace(/\.pdf$/i,'')+'_cropped.pdf');
+    showRB('crop');
+  }catch(e){setP('crop',0,'Error: '+e.message);}
 }
 
 // ─────────────────────────────
