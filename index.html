@@ -22,9 +22,9 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--t1);min-hei
 input,select,textarea,button{font-family:'Geist',sans-serif}
 
 /* LAYOUT */
-.app{display:grid;grid-template-columns:200px 1fr;min-height:100vh}
+.app{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
 nav{background:var(--s1);border-right:1px solid var(--bd);padding:20px 0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
-.main{padding:28px 32px;max-width:900px}
+.main{padding:28px 32px;max-width:920px}
 
 /* LOGO */
 .logo{padding:0 16px 20px;border-bottom:1px solid var(--bd);margin-bottom:12px}
@@ -40,13 +40,14 @@ nav{background:var(--s1);border-right:1px solid var(--bd);padding:20px 0;positio
 .ni:hover{background:var(--s2);color:var(--t1)}
 .ni.on{background:var(--acb);color:var(--ac)}
 .ni-ic{font-size:14px;flex-shrink:0}
-.ni-new{margin-left:auto;font-size:9px;background:var(--ac2);color:#fff;padding:1px 5px;border-radius:8px;font-weight:700}
+.ni-new{margin-left:auto;font-size:9px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;padding:1px 6px;border-radius:8px;font-weight:700;letter-spacing:.02em}
 
 /* PAGE */
 .page{display:none}.page.on{display:block}
 .ph{margin-bottom:24px}
 .ph h2{font-size:22px;font-weight:700;color:var(--t1);margin-bottom:5px;letter-spacing:-.3px}
 .ph p{font-size:13px;color:var(--t2);line-height:1.6}
+.ph .badge-new{display:inline-block;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle}
 
 /* DROPZONE */
 .dz{border:1.5px dashed var(--bd2);border-radius:var(--r);padding:36px 24px;text-align:center;cursor:pointer;background:var(--s1);transition:all .2s}
@@ -156,11 +157,6 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
 .img-thumb .rm{position:absolute;top:-5px;right:-5px;background:var(--rd);border:none;color:#fff;border-radius:50%;width:18px;height:18px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
 .img-thumb .img-n{font-size:9px;color:var(--t3);text-align:center;margin-top:3px;font-family:'Geist Mono',monospace}
 
-/* PDF VIEWER */
-.viewer-wrap{background:var(--s3);border-radius:var(--r);padding:12px;max-height:500px;overflow-y:auto;display:flex;flex-direction:column;align-items:center;gap:12px}
-.viewer-page canvas{max-width:100%;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.4)}
-.viewer-ctrl{display:flex;align-items:center;gap:8px;margin:10px 0;flex-wrap:wrap}
-
 /* ROTATE OPT */
 .rot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
 .rot-c{background:var(--s2);border:1.5px solid var(--bd);border-radius:var(--rs);padding:10px 6px;cursor:pointer;text-align:center;transition:all .12s}
@@ -174,6 +170,46 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
 .cr-s b{display:block;font-size:18px;font-weight:700}
 .cr-s span{font-size:10px;color:var(--t3)}
 
+/* PDF VIEWER */
+.viewer-wrap{background:var(--s3);border-radius:var(--r);padding:12px;max-height:560px;overflow-y:auto;display:flex;flex-direction:column;align-items:center;gap:12px}
+.viewer-ctrl{display:flex;align-items:center;gap:8px;margin:10px 0;flex-wrap:wrap}
+.viewer-ctrl input[type=number]{width:60px}
+
+/* PDF INFO CARD */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.info-card{background:var(--s2);border:1px solid var(--bd);border-radius:var(--rs);padding:12px 14px}
+.info-card .ic-lbl{font-size:10px;color:var(--t3);margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.info-card .ic-val{font-size:14px;font-weight:700;color:var(--t1)}
+.info-card .ic-sub{font-size:11px;color:var(--t2);margin-top:2px}
+.info-full{grid-column:1/-1}
+.meta-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.meta-row{display:flex;gap:10px;padding:7px 10px;background:var(--s2);border-radius:var(--rs);font-size:12px}
+.meta-row .mk{color:var(--t3);min-width:100px;font-weight:500}
+.meta-row .mv{color:var(--t1);word-break:break-all}
+
+/* FORM FIELDS */
+.field-list{display:flex;flex-direction:column;gap:8px;margin:12px 0;max-height:440px;overflow-y:auto}
+.field-item{background:var(--s2);border:1px solid var(--bd);border-radius:var(--rs);padding:10px 12px;display:flex;gap:10px;align-items:flex-start}
+.field-icon{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background:var(--acb)}
+.field-info{flex:1;min-width:0}
+.field-name{font-size:11px;color:var(--t3);margin-bottom:5px;font-weight:600}
+.field-inp{width:100%;background:var(--s3);border:1px solid var(--bd);border-radius:5px;padding:6px 10px;font-size:12px;color:var(--t1);outline:none}
+.field-inp:focus{border-color:var(--ac)}
+.field-inp[type=checkbox]{width:auto;margin-right:8px}
+.cb-label{font-size:12px;color:var(--t1);cursor:pointer}
+
+/* COMPARE */
+.compare-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.compare-panel{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px}
+.compare-panel h4{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.diff-add{background:rgba(52,211,153,.12);border-left:2px solid var(--gr);padding:2px 8px;margin:2px 0;border-radius:0 3px 3px 0;font-size:11px;color:var(--gr)}
+.diff-del{background:rgba(248,113,113,.12);border-left:2px solid var(--rd);padding:2px 8px;margin:2px 0;border-radius:0 3px 3px 0;font-size:11px;color:var(--rd)}
+.diff-same{padding:2px 8px;margin:2px 0;font-size:11px;color:var(--t3)}
+
+/* STICKER / STAMP */
+.stamp-preview{background:var(--s3);border-radius:var(--r);padding:20px;text-align:center;margin:12px 0;min-height:80px;display:flex;align-items:center;justify-content:center}
+.stamp-box{display:inline-block;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:8px 16px;border-radius:4px}
+
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
 
@@ -185,13 +221,14 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
   .ni{width:auto;padding:5px 9px;font-size:11px}
   .main{padding:14px}.grid2,.grid3{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}
   .rot-grid{grid-template-columns:1fr 1fr}.rr-orig,.rr-arr{display:none}
+  .compare-wrap{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <div class="app">
 <nav>
-  <div class="logo"><div class="logo-mark"><div class="logo-icon">📄</div><h1>PDF Tools Pro</h1></div><span>15 tools · browser only</span></div>
+  <div class="logo"><div class="logo-mark"><div class="logo-icon">📄</div><h1>PDF Tools Pro</h1></div><span>19 tools · browser only</span></div>
   <div class="nav-sec">
     <span class="nav-lbl">Organisasi</span>
     <button class="ni on" onclick="go('merge')"><span class="ni-ic">⊕</span>Merge PDF</button>
@@ -212,6 +249,11 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
     <button class="ni" onclick="go('compress')"><span class="ni-ic">📦</span>Compress PDF</button>
     <button class="ni" onclick="go('protect')"><span class="ni-ic">🔐</span>Password PDF</button>
     <button class="ni" onclick="go('textextract')"><span class="ni-ic">📋</span>Extract Teks</button>
+    <span class="nav-lbl">✨ Fitur Baru</span>
+    <button class="ni" onclick="go('viewer')"><span class="ni-ic">🔍</span>PDF Viewer <span class="ni-new">NEW</span></button>
+    <button class="ni" onclick="go('pdfinfo')"><span class="ni-ic">📊</span>Info PDF <span class="ni-new">NEW</span></button>
+    <button class="ni" onclick="go('fillform')"><span class="ni-ic">📝</span>Isi Form PDF <span class="ni-new">NEW</span></button>
+    <button class="ni" onclick="go('stamp')"><span class="ni-ic">🔖</span>Stempel PDF <span class="ni-new">NEW</span></button>
   </div>
 </nav>
 
@@ -527,6 +569,127 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEW: PDF VIEWER -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page" id="p-viewer">
+  <div class="ph"><h2>PDF Viewer <span class="badge-new">NEW</span></h2><p>Buka dan preview PDF langsung di browser. Zoom, navigasi halaman, dan cari teks.</p></div>
+  <div class="dz" id="dz-viewer" onclick="tri('fi-viewer')"><span class="dz-ic">🔍</span><p>Drop <em>1 file PDF</em> di sini untuk preview</p><small>Semua rendering lokal, tidak ada upload ke server</small></div>
+  <input type="file" id="fi-viewer" accept=".pdf" style="display:none">
+  <div id="cfg-viewer" style="display:none">
+    <div class="viewer-ctrl">
+      <button class="btn btn-g btn-sm" onclick="viewPrev()">◀ Sebelumnya</button>
+      <span style="font-size:12px;color:var(--t2)">Halaman</span>
+      <input type="number" id="vw-page" value="1" min="1" style="width:55px;text-align:center" onchange="viewGoto()">
+      <span style="font-size:12px;color:var(--t2)">dari <b id="vw-total">0</b></span>
+      <button class="btn btn-g btn-sm" onclick="viewNext()">Berikutnya ▶</button>
+      <span style="color:var(--bd2)">|</span>
+      <button class="btn btn-g btn-sm" onclick="viewZoom(-0.25)">🔍−</button>
+      <span id="vw-zoom-lbl" style="font-size:12px;color:var(--t2);min-width:40px;text-align:center">100%</span>
+      <button class="btn btn-g btn-sm" onclick="viewZoom(0.25)">🔍+</button>
+      <button class="btn btn-g btn-sm" onclick="viewFit()">↔ Fit</button>
+      <span style="color:var(--bd2)">|</span>
+      <div style="position:relative;display:flex;align-items:center">
+        <input type="text" id="vw-search" placeholder="Cari teks..." style="width:160px;padding-right:32px" onkeydown="if(event.key==='Enter')viewSearch()">
+        <button style="position:absolute;right:4px;background:none;border:none;color:var(--t2);cursor:pointer;font-size:13px" onclick="viewSearch()">🔍</button>
+      </div>
+      <span id="vw-search-res" style="font-size:11px;color:var(--t3)"></span>
+    </div>
+    <div class="viewer-wrap" id="vw-wrap">
+      <canvas id="vw-canvas" style="max-width:100%;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.4)"></canvas>
+    </div>
+    <div class="stats" style="margin-top:12px"><div class="chip">📄 <b id="vw-fn"></b></div><div class="chip"><b id="vw-pg2"></b> halaman</div><div class="chip"><b id="vw-sz"></b></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEW: PDF INFO -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page" id="p-pdfinfo">
+  <div class="ph"><h2>Info PDF <span class="badge-new">NEW</span></h2><p>Analisa lengkap file PDF: metadata, ukuran halaman, keamanan, font, dan lainnya.</p></div>
+  <div class="dz" id="dz-pdfinfo" onclick="tri('fi-pdfinfo')"><span class="dz-ic">📊</span><p>Drop <em>1 file PDF</em> untuk dianalisa</p><small>Analisa penuh dalam hitungan detik</small></div>
+  <input type="file" id="fi-pdfinfo" accept=".pdf" style="display:none">
+  <div id="cfg-pdfinfo" style="display:none">
+    <div class="pw" id="pw-pdfinfo" style="display:none"><div class="pb-bg"><div class="pb" id="pb-pdfinfo"></div></div><p class="pt" id="pt-pdfinfo"></p></div>
+    <div id="info-result"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEW: FILL FORM -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page" id="p-fillform">
+  <div class="ph"><h2>Isi Form PDF <span class="badge-new">NEW</span></h2><p>Isi form fields interaktif di PDF (text field, checkbox, dropdown) lalu simpan sebagai PDF biasa.</p></div>
+  <div class="dz" id="dz-fillform" onclick="tri('fi-fillform')"><span class="dz-ic">📝</span><p>Drop <em>PDF berisi form</em> di sini</p><small>Mendukung text fields, checkbox, radio button, dropdown</small></div>
+  <input type="file" id="fi-fillform" accept=".pdf" style="display:none">
+  <div id="cfg-fillform" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="ff-fn"></b></div><div class="chip"><b id="ff-fields">0</b> fields</div></div>
+    <div id="ff-nofields" style="display:none;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);border-radius:var(--r);padding:14px 18px;margin:12px 0">
+      <p style="font-size:13px;color:var(--am)">⚠️ PDF ini tidak memiliki form fields interaktif.</p>
+      <p style="font-size:12px;color:var(--t2);margin-top:4px">Form fields hanya ada pada PDF yang dibuat dengan tools khusus (Adobe Acrobat, LibreOffice, dll).</p>
+    </div>
+    <div class="field-list" id="ff-list"></div>
+    <div class="btns" id="ff-btns" style="display:none">
+      <button class="btn btn-p" onclick="doFillForm(false)">💾 Simpan dengan Fields Aktif</button>
+      <button class="btn btn-g" onclick="doFillForm(true)">📄 Flatten (Cetak ke PDF)</button>
+    </div>
+    <div class="pw" id="pw-fillform" style="display:none"><div class="pb-bg"><div class="pb" id="pb-fillform"></div></div><p class="pt" id="pt-fillform"></p></div>
+    <div class="rb" id="rb-fillform" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p id="rb-fillform-t">Form berhasil diisi!</p><span id="rb-fillform-i"></span></div><button class="rb-dl" id="dl-fillform">⬇ Unduh</button></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEW: STAMP / STEMPEL -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page" id="p-stamp">
+  <div class="ph"><h2>Stempel PDF <span class="badge-new">NEW</span></h2><p>Tambahkan stempel teks dengan box border ke PDF — cocok untuk "APPROVED", "RAHASIA", "DRAFT", dll.</p></div>
+  <div class="dz" id="dz-stamp" onclick="tri('fi-stamp')"><span class="dz-ic">🔖</span><p>Drop <em>1 file PDF</em> di sini</p></div>
+  <input type="file" id="fi-stamp" accept=".pdf" style="display:none">
+  <div id="cfg-stamp" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="st-fn"></b></div><div class="chip"><b id="st-pg2"></b> halaman</div></div>
+    <div class="sec">
+      <div class="grid2">
+        <div>
+          <div class="fg"><label>Teks stempel</label>
+            <div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap">
+              <button class="btn btn-g btn-sm" onclick="setStampTxt('APPROVED')">APPROVED</button>
+              <button class="btn btn-g btn-sm" onclick="setStampTxt('RAHASIA')">RAHASIA</button>
+              <button class="btn btn-g btn-sm" onclick="setStampTxt('DRAFT')">DRAFT</button>
+              <button class="btn btn-g btn-sm" onclick="setStampTxt('VOID')">VOID</button>
+              <button class="btn btn-g btn-sm" onclick="setStampTxt('COPY')">COPY</button>
+            </div>
+            <input type="text" id="st-txt" value="APPROVED" oninput="updateStampPreview()">
+          </div>
+          <div class="grid2">
+            <div class="fg"><label>Posisi</label><select id="st-pos" onchange="updateStampPreview()"><option value="tr">Kanan Atas</option><option value="tl">Kiri Atas</option><option value="br">Kanan Bawah</option><option value="bl">Kiri Bawah</option><option value="center">Tengah</option></select></div>
+            <div class="fg"><label>Halaman</label><select id="st-pages" onchange="updateStampPreview()"><option value="all">Semua halaman</option><option value="first">Halaman pertama</option><option value="last">Halaman terakhir</option><option value="custom">Kustom...</option></select></div>
+          </div>
+          <div class="fg" id="st-custom-wrap" style="display:none"><label>Nomor halaman kustom</label><input type="text" id="st-custom" placeholder="1, 3, 5-8"></div>
+          <div class="grid3">
+            <div class="fg"><label>Ukuran font</label><input type="number" id="st-sz" value="28" min="10" max="100" onchange="updateStampPreview()"></div>
+            <div class="fg"><label>Opacity</label><input type="number" id="st-op" value="0.85" min="0.1" max="1" step="0.05" onchange="updateStampPreview()"></div>
+            <div class="fg"><label>Border ketebalan</label><input type="number" id="st-bw" value="2" min="1" max="8" onchange="updateStampPreview()"></div>
+          </div>
+          <div class="grid2">
+            <div class="fg"><label>Warna teks & border</label><input type="color" id="st-col" value="#cc0000" onchange="updateStampPreview()" style="width:60px;height:36px;border:none;background:none;cursor:pointer"></div>
+            <div class="fg"><label>Rotasi °</label><input type="number" id="st-rot" value="0" min="-90" max="90" onchange="updateStampPreview()"></div>
+          </div>
+        </div>
+        <div>
+          <label style="display:block;margin-bottom:8px">Preview stempel</label>
+          <div class="stamp-preview" id="st-preview">
+            <div class="stamp-box" id="st-box">APPROVED</div>
+          </div>
+          <p style="font-size:11px;color:var(--t3);text-align:center;margin-top:6px">Preview perkiraan. Hasil final mungkin sedikit berbeda.</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="doStamp()">🔖 Tambahkan Stempel</button>
+    <div class="pw" id="pw-stamp" style="display:none"><div class="pb-bg"><div class="pb" id="pb-stamp"></div></div><p class="pt" id="pt-stamp"></p></div>
+    <div class="rb" id="rb-stamp" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p>Stempel berhasil ditambahkan!</p><span id="rb-stamp-i"></span></div><button class="rb-dl" id="dl-stamp">⬇ Unduh</button></div>
+  </div>
+</div>
+
 </main>
 </div>
 
@@ -550,6 +713,10 @@ const S={
   protect:{file:null,buf:null,result:null},
   textextract:{file:null,buf:null,pages:0,text:''},
   pdf2img:{file:null,buf:null,pages:0,imgs:[]},
+  viewer:{file:null,buf:null,pages:0,cur:1,zoom:1.0,pdfJs:null},
+  pdfinfo:{file:null,buf:null},
+  fillform:{file:null,buf:null,fields:[]},
+  stamp:{file:null,buf:null,pages:0},
 };
 
 // ── NAV ──
@@ -842,7 +1009,6 @@ async function dlZipRn(){
     const file=S.rename.files[i];const name=(document.getElementById('rn-'+i)?.value.trim()||file.name.replace(/\.pdf$/i,''))+'.pdf';
     const buf=await file.arrayBuffer();files.push({name,data:new Uint8Array(buf)});
   }
-  dlB(buildZip(files),'renamed_pdfs.zip'.replace('application/pdf','application/zip'));
   const blob=new Blob([buildZip(files)],{type:'application/zip'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download='renamed_pdfs.zip';a.click();setTimeout(()=>URL.revokeObjectURL(u),5000);
 }
 function rnPrefix(){const p=prompt('Prefix:');if(!p)return;S.rename.files.forEach((_,i)=>{const e=document.getElementById('rn-'+i);if(e)e.value=p+e.value;});}
@@ -1228,6 +1394,308 @@ function dlTxt(){
 function dlTxtDoc(){
   const header=`# ${S.textextract.file.name.replace(/\.pdf$/i,'')}\n\n`;
   const b=new Blob([header+S.textextract.text],{type:'text/markdown'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=S.textextract.file.name.replace(/\.pdf$/i,'')+'.md';a.click();setTimeout(()=>URL.revokeObjectURL(u),5000);
+}
+
+// ═══════════════════════════════════════════
+// NEW: PDF VIEWER
+// ═══════════════════════════════════════════
+setupDZ('dz-viewer','fi-viewer',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.viewer.file=f;S.viewer.cur=1;S.viewer.zoom=1.0;
+  f.arrayBuffer().then(async buf=>{
+    S.viewer.buf=buf;
+    S.viewer.pdfJs=await pdfjsLib.getDocument({data:buf}).promise;
+    S.viewer.pages=S.viewer.pdfJs.numPages;
+    document.getElementById('vw-fn').textContent=f.name;
+    document.getElementById('vw-pg2').textContent=S.viewer.pages;
+    document.getElementById('vw-sz').textContent=fmt(f.size);
+    document.getElementById('vw-total').textContent=S.viewer.pages;
+    document.getElementById('vw-page').max=S.viewer.pages;
+    document.getElementById('cfg-viewer').style.display='block';
+    viewRender();
+  });
+});
+async function viewRender(){
+  if(!S.viewer.pdfJs)return;
+  const page=await S.viewer.pdfJs.getPage(S.viewer.cur);
+  // Auto-fit to container width on first load
+  const wrap=document.getElementById('vw-wrap');
+  const containerW=wrap.clientWidth-24;
+  const baseVP=page.getViewport({scale:1});
+  if(S.viewer.zoom===1.0&&containerW>0){S.viewer.zoom=Math.min(containerW/baseVP.width,1.8);}
+  const vp=page.getViewport({scale:S.viewer.zoom});
+  const canvas=document.getElementById('vw-canvas');
+  canvas.width=vp.width;canvas.height=vp.height;
+  await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+  document.getElementById('vw-page').value=S.viewer.cur;
+  document.getElementById('vw-zoom-lbl').textContent=Math.round(S.viewer.zoom*100)+'%';
+}
+function viewPrev(){if(S.viewer.cur>1){S.viewer.cur--;viewRender();}}
+function viewNext(){if(S.viewer.cur<S.viewer.pages){S.viewer.cur++;viewRender();}}
+function viewGoto(){const n=parseInt(document.getElementById('vw-page').value);if(n>=1&&n<=S.viewer.pages){S.viewer.cur=n;viewRender();}}
+function viewZoom(delta){S.viewer.zoom=Math.max(0.25,Math.min(4,S.viewer.zoom+delta));viewRender();}
+function viewFit(){S.viewer.zoom=1.0;viewRender();}
+async function viewSearch(){
+  const q=document.getElementById('vw-search').value.trim().toLowerCase();
+  const res=document.getElementById('vw-search-res');
+  if(!q||!S.viewer.pdfJs){res.textContent='';return;}
+  let found=[];
+  for(let i=1;i<=S.viewer.pages;i++){
+    const page=await S.viewer.pdfJs.getPage(i);
+    const tc=await page.getTextContent();
+    const txt=tc.items.map(x=>x.str).join(' ').toLowerCase();
+    if(txt.includes(q))found.push(i);
+  }
+  if(found.length){res.textContent=`Ditemukan di ${found.length} halaman: ${found.slice(0,8).join(', ')}${found.length>8?'...':''}`;res.style.color='var(--gr)';S.viewer.cur=found[0];viewRender();}
+  else{res.textContent='Tidak ditemukan';res.style.color='var(--rd)';}
+}
+// Keyboard navigation
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('p-viewer').classList.contains('on')&&document.activeElement.tagName!=='INPUT'){
+    if(e.key==='ArrowRight'||e.key==='ArrowDown')viewNext();
+    else if(e.key==='ArrowLeft'||e.key==='ArrowUp')viewPrev();
+  }
+});
+
+// ═══════════════════════════════════════════
+// NEW: PDF INFO / ANALYZE
+// ═══════════════════════════════════════════
+setupDZ('dz-pdfinfo','fi-pdfinfo',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.pdfinfo.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.pdfinfo.buf=buf;
+    document.getElementById('cfg-pdfinfo').style.display='block';
+    showP('pdfinfo');setP('pdfinfo',20,'Menganalisa...');await tick();
+    try{
+      const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+      const pdfJs=await pdfjsLib.getDocument({data:buf.slice(0)}).promise;
+      setP('pdfinfo',60,'Membaca halaman...');await tick();
+      const pageCount=pdf.getPageCount();
+      const pages=pdf.getPages();
+      // Collect page sizes
+      const sizes=pages.map(p=>{const{width,height}=p.getSize();return{w:Math.round(width),h:Math.round(height)};});
+      const uniqueSizes=[...new Set(sizes.map(s=>`${s.w}×${s.h}`))];
+      // Estimate page type
+      function guessPageType(w,h){
+        const eps=5;
+        if(Math.abs(w-595)<=eps&&Math.abs(h-842)<=eps)return'A4 Portrait';
+        if(Math.abs(w-842)<=eps&&Math.abs(h-595)<=eps)return'A4 Landscape';
+        if(Math.abs(w-612)<=eps&&Math.abs(h-792)<=eps)return'Letter Portrait';
+        if(Math.abs(w-792)<=eps&&Math.abs(h-612)<=eps)return'Letter Landscape';
+        if(Math.abs(w-842)<=eps&&Math.abs(h-1191)<=eps)return'A3 Portrait';
+        return`Kustom (${w}×${h}pt)`;
+      }
+      // Extract text sample for word count
+      setP('pdfinfo',75,'Menghitung kata...');await tick();
+      let wordCount=0,charCount=0,hasText=false;
+      for(let i=1;i<=Math.min(pageCount,20);i++){
+        const pg=await pdfJs.getPage(i);const tc=await pg.getTextContent();
+        const txt=tc.items.map(x=>x.str).join(' ');
+        charCount+=txt.length;wordCount+=txt.split(/\s+/).filter(Boolean).length;
+        if(txt.trim().length>10)hasText=true;
+      }
+      if(pageCount>20){wordCount=Math.round(wordCount/20*pageCount);charCount=Math.round(charCount/20*pageCount);}
+      setP('pdfinfo',90,'Membaca metadata...');await tick();
+      const meta={
+        title:pdf.getTitle()||'—',author:pdf.getAuthor()||'—',subject:pdf.getSubject()||'—',
+        creator:pdf.getCreator()||'—',producer:pdf.getProducer()||'—',
+        keywords:pdf.getKeywords()||'—',
+        created:pdf.getCreationDate()?pdf.getCreationDate().toLocaleDateString('id-ID',{year:'numeric',month:'long',day:'numeric'}):'—',
+        modified:pdf.getModificationDate()?pdf.getModificationDate().toLocaleDateString('id-ID',{year:'numeric',month:'long',day:'numeric'}):'—',
+      };
+      // Check form fields
+      const form=pdf.getForm();let fieldCount=0;
+      try{fieldCount=form.getFields().length;}catch(e){}
+      setP('pdfinfo',100,'Selesai ✓');
+      const r=document.getElementById('info-result');
+      r.innerHTML=`
+        <div class="info-grid">
+          <div class="info-card"><div class="ic-lbl">Total Halaman</div><div class="ic-val">${pageCount}</div><div class="ic-sub">halaman</div></div>
+          <div class="info-card"><div class="ic-lbl">Ukuran File</div><div class="ic-val">${fmt(f.size)}</div><div class="ic-sub">${(f.size/pageCount/1024).toFixed(1)} KB/halaman</div></div>
+          <div class="info-card"><div class="ic-lbl">Ukuran Halaman</div><div class="ic-val">${guessPageType(sizes[0].w,sizes[0].h)}</div><div class="ic-sub">${uniqueSizes.length>1?`${uniqueSizes.length} ukuran berbeda`:'Semua sama'}</div></div>
+          <div class="info-card"><div class="ic-lbl">Estimasi Kata</div><div class="ic-val">${wordCount.toLocaleString()}</div><div class="ic-sub">${charCount.toLocaleString()} karakter${pageCount>20?' (estimasi)':''}</div></div>
+          <div class="info-card"><div class="ic-lbl">Tipe Konten</div><div class="ic-val">${hasText?'📝 Teks':'🖼 Gambar/Scan'}</div><div class="ic-sub">${hasText?'Bisa di-extract':'Perlu OCR untuk extract'}</div></div>
+          <div class="info-card"><div class="ic-lbl">Form Fields</div><div class="ic-val">${fieldCount}</div><div class="ic-sub">${fieldCount>0?'Ada form interaktif':'Tidak ada form'}</div></div>
+          <div class="info-card info-full"><div class="ic-lbl">Nama File</div><div class="ic-val" style="font-size:13px">${f.name}</div></div>
+        </div>
+        <div class="sec" style="margin-top:14px">
+          <div class="sec-t">🏷 Metadata</div>
+          <div class="meta-list">
+            ${Object.entries(meta).map(([k,v])=>`<div class="meta-row"><span class="mk">${{title:'Judul',author:'Penulis',subject:'Subjek',creator:'Creator',producer:'Producer',keywords:'Keywords',created:'Dibuat',modified:'Diubah'}[k]||k}</span><span class="mv">${v}</span></div>`).join('')}
+          </div>
+        </div>
+        ${uniqueSizes.length>1?`<div class="sec"><div class="sec-t">📐 Ukuran Halaman</div><div class="meta-list">${uniqueSizes.map(s=>`<div class="meta-row"><span class="mk">${s}</span><span class="mv">${sizes.filter(p=>p.w+'×'+p.h===s).length} halaman</span></div>`).join('')}</div></div>`:''}
+      `;
+    }catch(e){setP('pdfinfo',0,'Error: '+e.message);}
+  });
+});
+
+// ═══════════════════════════════════════════
+// NEW: FILL FORM
+// ═══════════════════════════════════════════
+setupDZ('dz-fillform','fi-fillform',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.fillform.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.fillform.buf=buf;
+    const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+    document.getElementById('ff-fn').textContent=f.name;
+    document.getElementById('cfg-fillform').style.display='block';hideRB('fillform');
+    let fields=[];
+    try{
+      const form=pdf.getForm();
+      fields=form.getFields();
+    }catch(e){}
+    document.getElementById('ff-fields').textContent=fields.length;
+    if(!fields.length){
+      document.getElementById('ff-nofields').style.display='block';
+      document.getElementById('ff-list').innerHTML='';
+      document.getElementById('ff-btns').style.display='none';
+      return;
+    }
+    document.getElementById('ff-nofields').style.display='none';
+    document.getElementById('ff-btns').style.display='flex';
+    S.fillform.fields=fields;
+    const list=document.getElementById('ff-list');list.innerHTML='';
+    fields.forEach((field,idx)=>{
+      const type=field.constructor.name;
+      const name=field.getName();
+      const item=document.createElement('div');item.className='field-item';
+      let icon='📝',inputHtml='';
+      if(type==='PDFTextField'){
+        icon='✏️';
+        let cur='';try{cur=field.getText()||'';}catch(e){}
+        inputHtml=`<input class="field-inp" id="ff-f${idx}" type="text" value="${cur.replace(/"/g,'&quot;')}" placeholder="Isi field '${name}'">`;
+      }else if(type==='PDFCheckBox'){
+        icon='☑️';
+        let checked=false;try{checked=field.isChecked();}catch(e){}
+        inputHtml=`<label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input class="field-inp" id="ff-f${idx}" type="checkbox" ${checked?'checked':''}><span class="cb-label">Dicentang</span></label>`;
+      }else if(type==='PDFDropdown'){
+        icon='🔽';
+        const opts=field.getOptions();
+        let cur='';try{cur=field.getSelected()[0]||'';}catch(e){}
+        inputHtml=`<select class="field-inp" id="ff-f${idx}"><option value="">-- Pilih --</option>${opts.map(o=>`<option value="${o}"${o===cur?' selected':''}>${o}</option>`).join('')}</select>`;
+      }else if(type==='PDFRadioGroup'){
+        icon='🔘';
+        const opts=field.getOptions();
+        let cur='';try{cur=field.getSelected()||'';}catch(e){}
+        inputHtml=`<div style="display:flex;gap:8px;flex-wrap:wrap">${opts.map(o=>`<label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:12px;color:var(--t1)"><input type="radio" name="ff-f${idx}" value="${o}" ${o===cur?'checked':''}> ${o}</label>`).join('')}</div>`;
+      }else{
+        icon='📋';inputHtml=`<span style="font-size:11px;color:var(--t3)">Tipe: ${type}</span>`;
+      }
+      item.innerHTML=`<div class="field-icon">${icon}</div><div class="field-info"><div class="field-name">${name} <span style="color:var(--t3);font-weight:400">(${type.replace('PDF','')})</span></div>${inputHtml}</div>`;
+      list.appendChild(item);
+    });
+  });
+});
+async function doFillForm(flatten){
+  if(!S.fillform.buf)return;hideRB('fillform');showP('fillform');setP('fillform',15,'Memuat...');
+  try{
+    const {PDFDocument}=PDFLib;
+    const pdf=await PDFDocument.load(S.fillform.buf,{ignoreEncryption:true});
+    const form=pdf.getForm();
+    const fields=form.getFields();
+    setP('fillform',40,'Mengisi fields...');await tick();
+    fields.forEach((field,idx)=>{
+      const type=field.constructor.name;
+      const el=document.getElementById('ff-f'+idx);
+      if(!el)return;
+      try{
+        if(type==='PDFTextField')field.setText(el.value);
+        else if(type==='PDFCheckBox'){if(el.checked)field.check();else field.uncheck();}
+        else if(type==='PDFDropdown'&&el.value)field.select(el.value);
+        else if(type==='PDFRadioGroup'){
+          const sel=document.querySelector(`input[name="ff-f${idx}"]:checked`);
+          if(sel)field.select(sel.value);
+        }
+      }catch(e){}
+    });
+    if(flatten){setP('fillform',65,'Flatten...');await tick();form.flatten();}
+    setP('fillform',80,'Menyimpan...');await tick();
+    const bytes=await pdf.save();setP('fillform',100,'Selesai ✓');
+    document.getElementById('rb-fillform-t').textContent=`Form berhasil diisi (${flatten?'flatten':'aktif'})!`;
+    document.getElementById('rb-fillform-i').textContent=`${fields.length} fields · ${fmt(bytes.byteLength)}`;
+    const suffix=flatten?'_filled_flat':'_filled';
+    document.getElementById('dl-fillform').onclick=()=>dlB(bytes,S.fillform.file.name.replace(/\.pdf$/i,'')+suffix+'.pdf');
+    showRB('fillform');
+  }catch(e){setP('fillform',0,'Error: '+e.message);}
+}
+
+// ═══════════════════════════════════════════
+// NEW: STAMP / STEMPEL
+// ═══════════════════════════════════════════
+setupDZ('dz-stamp','fi-stamp',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.stamp.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.stamp.buf=buf;const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+    S.stamp.pages=pdf.getPageCount();
+    document.getElementById('st-fn').textContent=f.name;
+    document.getElementById('st-pg2').textContent=S.stamp.pages;
+    document.getElementById('cfg-stamp').style.display='block';hideRB('stamp');
+    updateStampPreview();
+  });
+});
+document.getElementById('st-pages')&&document.getElementById('st-pages').addEventListener('change',()=>{
+  document.getElementById('st-custom-wrap').style.display=document.getElementById('st-pages').value==='custom'?'block':'none';
+});
+function setStampTxt(v){document.getElementById('st-txt').value=v;updateStampPreview();}
+function updateStampPreview(){
+  const txt=document.getElementById('st-txt')?.value||'APPROVED';
+  const sz=parseInt(document.getElementById('st-sz')?.value)||28;
+  const op=parseFloat(document.getElementById('st-op')?.value)||0.85;
+  const bw=parseInt(document.getElementById('st-bw')?.value)||2;
+  const col=document.getElementById('st-col')?.value||'#cc0000';
+  const rot=parseInt(document.getElementById('st-rot')?.value)||0;
+  const box=document.getElementById('st-box');
+  if(!box)return;
+  box.textContent=txt;
+  box.style.cssText=`font-size:${sz*0.6}px;color:${col};border:${bw}px solid ${col};opacity:${op};transform:rotate(${rot}deg);padding:${sz*0.2}px ${sz*0.4}px;letter-spacing:.08em;font-weight:900;border-radius:4px;font-family:'Geist',sans-serif`;
+}
+async function doStamp(){
+  if(!S.stamp.buf)return;hideRB('stamp');showP('stamp');setP('stamp',10,'Memuat...');
+  const {PDFDocument,rgb,degrees,StandardFonts}=PDFLib;
+  const src=await PDFDocument.load(S.stamp.buf,{ignoreEncryption:true});
+  const txt=document.getElementById('st-txt').value||'APPROVED';
+  const sz=parseInt(document.getElementById('st-sz').value)||28;
+  const op=parseFloat(document.getElementById('st-op').value)||0.85;
+  const bw=parseInt(document.getElementById('st-bw').value)||2;
+  const hex=document.getElementById('st-col').value;
+  const rot=parseInt(document.getElementById('st-rot').value)||0;
+  const pos=document.getElementById('st-pos').value;
+  const pagesMode=document.getElementById('st-pages').value;
+  const cr=parseInt(hex.slice(1,3),16)/255,cg=parseInt(hex.slice(3,5),16)/255,cb2=parseInt(hex.slice(5,7),16)/255;
+  const color=PDFLib.rgb(cr,cg,cb2);
+  const font=await src.embedFont(StandardFonts.HelveticaBold);
+  const allPages=src.getPages();
+  let targetPages=[];
+  if(pagesMode==='all')targetPages=allPages;
+  else if(pagesMode==='first')targetPages=[allPages[0]];
+  else if(pagesMode==='last')targetPages=[allPages[allPages.length-1]];
+  else if(pagesMode==='custom'){const ns=parsePages(document.getElementById('st-custom').value,allPages.length).map(p=>p-1);targetPages=ns.map(i=>allPages[i]).filter(Boolean);}
+  setP('stamp',50,'Menambahkan stempel...');await tick();
+  targetPages.forEach(page=>{
+    const{width,height}=page.getSize();
+    const tw=font.widthOfTextAtSize(txt,sz);
+    const padH=sz*0.4,padV=sz*0.25;
+    const boxW=tw+padH*2,boxH=sz+padV*2;
+    let bx,by;
+    if(pos==='tr'){bx=width-boxW-20;by=height-boxH-20;}
+    else if(pos==='tl'){bx=20;by=height-boxH-20;}
+    else if(pos==='br'){bx=width-boxW-20;by=20;}
+    else if(pos==='bl'){bx=20;by=20;}
+    else{bx=(width-boxW)/2;by=(height-boxH)/2;}
+    // Draw border rect
+    page.drawRectangle({x:bx,y:by,width:boxW,height:boxH,borderColor:color,borderWidth:bw,opacity:op,rotate:degrees(rot)});
+    // Draw text inside
+    page.drawText(txt,{x:bx+padH,y:by+padV,size:sz,font,color,opacity:op,rotate:degrees(rot)});
+  });
+  setP('stamp',85,'Menyimpan...');await tick();
+  const bytes=await src.save();setP('stamp',100,'Selesai ✓');
+  document.getElementById('rb-stamp-i').textContent=`${targetPages.length} halaman distempel · ${fmt(bytes.byteLength)}`;
+  document.getElementById('dl-stamp').onclick=()=>dlB(bytes,S.stamp.file.name.replace(/\.pdf$/i,'')+'_stamped.pdf');
+  showRB('stamp');
 }
 
 // ─────────────────────────────
