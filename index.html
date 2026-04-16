@@ -6,6 +6,8 @@
 <title>PDF Tools Pro</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -249,7 +251,7 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
 <body>
 <div class="app">
 <nav>
-  <div class="logo"><div class="logo-mark"><div class="logo-icon">📄</div><h1>PDF Tools Pro</h1></div><span>26 tools · browser only</span></div>
+  <div class="logo"><div class="logo-mark"><div class="logo-icon">📄</div><h1>PDF Tools Pro</h1></div><span>29 tools · browser only</span></div>
   <div class="nav-sec">
     <span class="nav-lbl">Organisasi</span>
     <button class="ni on" onclick="go('merge')"><span class="ni-ic">⊕</span>Merge PDF</button>
@@ -281,6 +283,10 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
     <button class="ni" onclick="go('insertblank')"><span class="ni-ic">➕</span>Sisipkan Halaman <span class="ni-new">NEW</span></button>
     <button class="ni" onclick="go('duplicate')"><span class="ni-ic">📋</span>Duplikat Halaman <span class="ni-new">NEW</span></button>
     <button class="ni" onclick="go('crop')"><span class="ni-ic">✂️</span>Crop Halaman <span class="ni-new">NEW</span></button>
+    <span class="nav-lbl">🔄 Konversi</span>
+    <button class="ni" onclick="go('pdf2excel')"><span class="ni-ic">📊</span>PDF → Excel <span class="ni-new" style="background:linear-gradient(135deg,#10b981,#0ea5e9)">NEW</span></button>
+    <button class="ni" onclick="go('pdf2word')"><span class="ni-ic">📝</span>PDF → Word <span class="ni-new" style="background:linear-gradient(135deg,#3b82f6,#6366f1)">NEW</span></button>
+    <button class="ni" onclick="go('pdf2pptx')"><span class="ni-ic">📑</span>PDF → PowerPoint <span class="ni-new" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">NEW</span></button>
     <span class="nav-lbl">🏦 Keuangan</span>
     <button class="ni" onclick="window.location.href='bank-to-excel.html'"><span class="ni-ic">🏦</span>Mutasi → Excel <span class="ni-new" style="background:linear-gradient(135deg,#f59e0b,#10b981)">AI</span></button>
   </div>
@@ -944,6 +950,123 @@ label{font-size:11px;color:var(--t2);font-weight:500;display:block;margin-bottom
     <button class="btn btn-p" onclick="doCrop()">✂️ Crop Sekarang</button>
     <div class="pw" id="pw-crop" style="display:none"><div class="pb-bg"><div class="pb" id="pb-crop"></div></div><p class="pt" id="pt-crop"></p></div>
     <div class="rb" id="rb-crop" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p id="rb-crop-t">Berhasil di-crop!</p><span id="rb-crop-i"></span></div><button class="rb-dl" id="dl-crop">⬇ Unduh</button></div>
+  </div>
+</div>
+
+<!-- PDF TO EXCEL -->
+<div class="page" id="p-pdf2excel">
+  <div class="ph"><h2>PDF → Excel <span class="badge-new">NEW</span></h2><p>Konversi PDF ke file Excel (.xlsx) dengan deteksi tabel otomatis. Teks, angka, dan struktur tabel dipreservasi semaksimal mungkin.</p></div>
+  <div class="dz" id="dz-pdf2excel" onclick="tri('fi-pdf2excel')"><span class="dz-ic">📊</span><p>Drop <em>1 file PDF</em> di sini atau <em>klik untuk pilih</em></p><small>Tabel & data akan di-extract ke sheet Excel</small></div>
+  <input type="file" id="fi-pdf2excel" accept=".pdf" style="display:none">
+  <div id="cfg-pdf2excel" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="xe-fn"></b></div><div class="chip"><b id="xe-pg"></b> halaman</div></div>
+    <div class="sec">
+      <div class="sec-t">⚙️ Opsi Konversi</div>
+      <div class="grid2" style="margin-bottom:14px">
+        <div class="oc on" id="xe-opt-auto" onclick="xeMode('auto')"><h4>🤖 Deteksi Otomatis</h4><p>Deteksi tabel & layout secara cerdas</p></div>
+        <div class="oc" id="xe-opt-text" onclick="xeMode('text')"><h4>📋 Teks per Halaman</h4><p>Tiap halaman → 1 sheet teks</p></div>
+      </div>
+      <div class="fg">
+        <label>Halaman yang dikonversi (kosong = semua)</label>
+        <input type="text" id="xe-pages" placeholder="Kosong = semua. Cth: 1-3, 5, 7">
+      </div>
+      <div class="fg">
+        <label>Nama file output</label>
+        <input type="text" id="xe-outname" style="width:240px" placeholder="output">
+        <div class="hint">File akan disimpan sebagai .xlsx</div>
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="doPdf2Excel()">📊 Konversi ke Excel</button>
+    <div class="pw" id="pw-pdf2excel" style="display:none"><div class="pb-bg"><div class="pb" id="pb-pdf2excel"></div></div><p class="pt" id="pt-pdf2excel"></p></div>
+    <div class="rb" id="rb-pdf2excel" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p id="rb-pdf2excel-t">Konversi selesai!</p><span id="rb-pdf2excel-i"></span></div><button class="rb-dl" id="dl-pdf2excel">⬇ Unduh .xlsx</button></div>
+  </div>
+</div>
+
+<!-- PDF TO WORD -->
+<div class="page" id="p-pdf2word">
+  <div class="ph"><h2>PDF → Word <span class="badge-new">NEW</span></h2><p>Konversi PDF ke file Word (.docx) yang bisa diedit. Struktur teks, heading, paragraf, dan list dipreservasi.</p></div>
+  <div class="dz" id="dz-pdf2word" onclick="tri('fi-pdf2word')"><span class="dz-ic">📝</span><p>Drop <em>1 file PDF</em> di sini atau <em>klik untuk pilih</em></p><small>Teks dan layout akan dikonversi ke .docx</small></div>
+  <input type="file" id="fi-pdf2word" accept=".pdf" style="display:none">
+  <div id="cfg-pdf2word" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="wd-fn"></b></div><div class="chip"><b id="wd-pg"></b> halaman</div></div>
+    <div class="sec">
+      <div class="sec-t">⚙️ Opsi Konversi</div>
+      <div class="grid3" style="margin-bottom:14px">
+        <div class="oc on" id="wd-opt-rich" onclick="wdMode('rich')"><h4>✨ Rich Format</h4><p>Deteksi heading, bold, paragraf</p></div>
+        <div class="oc" id="wd-opt-plain" onclick="wdMode('plain')"><h4>📄 Plain Text</h4><p>Teks murni tanpa format</p></div>
+        <div class="oc" id="wd-opt-table" onclick="wdMode('table')"><h4>📊 Preserve Tabel</h4><p>Utamakan deteksi tabel</p></div>
+      </div>
+      <div class="fg">
+        <label>Halaman yang dikonversi (kosong = semua)</label>
+        <input type="text" id="wd-pages" placeholder="Kosong = semua. Cth: 1-5, 8">
+      </div>
+      <div class="grid2">
+        <div class="fg">
+          <label>Nama file output</label>
+          <input type="text" id="wd-outname" placeholder="output">
+          <div class="hint">Disimpan sebagai .docx</div>
+        </div>
+        <div class="fg">
+          <label>Font dokumen</label>
+          <select id="wd-font">
+            <option value="Calibri">Calibri (default)</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Arial">Arial</option>
+            <option value="Georgia">Georgia</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="doPdf2Word()">📝 Konversi ke Word</button>
+    <div class="pw" id="pw-pdf2word" style="display:none"><div class="pb-bg"><div class="pb" id="pb-pdf2word"></div></div><p class="pt" id="pt-pdf2word"></p></div>
+    <div class="rb" id="rb-pdf2word" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p id="rb-pdf2word-t">Konversi selesai!</p><span id="rb-pdf2word-i"></span></div><button class="rb-dl" id="dl-pdf2word">⬇ Unduh .docx</button></div>
+  </div>
+</div>
+
+<!-- PDF TO POWERPOINT -->
+<div class="page" id="p-pdf2pptx">
+  <div class="ph"><h2>PDF → PowerPoint <span class="badge-new">NEW</span></h2><p>Konversi setiap halaman PDF menjadi slide PowerPoint (.pptx). Setiap halaman dirender sebagai gambar HD dalam slide.</p></div>
+  <div class="dz" id="dz-pdf2pptx" onclick="tri('fi-pdf2pptx')"><span class="dz-ic">📑</span><p>Drop <em>1 file PDF</em> di sini atau <em>klik untuk pilih</em></p><small>Tiap halaman PDF → 1 slide PowerPoint</small></div>
+  <input type="file" id="fi-pdf2pptx" accept=".pdf" style="display:none">
+  <div id="cfg-pdf2pptx" style="display:none">
+    <div class="stats"><div class="chip">📄 <b id="pp-fn"></b></div><div class="chip"><b id="pp-pg"></b> halaman</div></div>
+    <div class="sec">
+      <div class="sec-t">⚙️ Opsi Slide</div>
+      <div class="grid2" style="margin-bottom:14px">
+        <div class="oc on" id="pp-opt-img" onclick="ppMode('image')"><h4>🖼 Image Mode (Terbaik)</h4><p>Tiap halaman dirender sebagai gambar HD. Layout 100% preserved.</p></div>
+        <div class="oc" id="pp-opt-text" onclick="ppMode('text')"><h4>📋 Text Mode</h4><p>Extract teks ke slide. Bisa diedit di PowerPoint.</p></div>
+      </div>
+      <div class="grid3">
+        <div class="fg">
+          <label>Kualitas render</label>
+          <select id="pp-quality">
+            <option value="2">Normal (2x)</option>
+            <option value="3" selected>HD (3x)</option>
+            <option value="4">Ultra HD (4x)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Ukuran slide</label>
+          <select id="pp-size">
+            <option value="widescreen">Widescreen 16:9</option>
+            <option value="standard">Standard 4:3</option>
+            <option value="a4">A4 Portrait</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Halaman (kosong = semua)</label>
+          <input type="text" id="pp-pages" placeholder="Cth: 1-5, 8">
+        </div>
+      </div>
+      <div class="fg">
+        <label>Nama file output</label>
+        <input type="text" id="pp-outname" style="width:240px" placeholder="presentation">
+        <div class="hint">Disimpan sebagai .pptx</div>
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="doPdf2Pptx()">📑 Konversi ke PowerPoint</button>
+    <div class="pw" id="pw-pdf2pptx" style="display:none"><div class="pb-bg"><div class="pb" id="pb-pdf2pptx"></div></div><p class="pt" id="pt-pdf2pptx"></p></div>
+    <div class="rb" id="rb-pdf2pptx" style="display:none"><div class="rb-ic">✅</div><div class="rb-info"><p id="rb-pdf2pptx-t">Konversi selesai!</p><span id="rb-pdf2pptx-i"></span></div><button class="rb-dl" id="dl-pdf2pptx">⬇ Unduh .pptx</button></div>
   </div>
 </div>
 
@@ -2437,6 +2560,601 @@ function buildZip(files){
   parts.push(eocd);
   const total=parts.reduce((a,p)=>a+p.length,0);const result=new Uint8Array(total);let pos=0;
   parts.forEach(p=>{result.set(p,pos);pos+=p.length;});return result;
+}
+
+// ═══════════════════════════════════════════
+// PDF → EXCEL
+// ═══════════════════════════════════════════
+S.pdf2excel={file:null,buf:null,pages:0,mode:'auto'};
+function xeMode(m){
+  S.pdf2excel.mode=m;
+  document.getElementById('xe-opt-auto').classList.toggle('on',m==='auto');
+  document.getElementById('xe-opt-text').classList.toggle('on',m==='text');
+}
+setupDZ('dz-pdf2excel','fi-pdf2excel',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.pdf2excel.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.pdf2excel.buf=buf;
+    const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+    S.pdf2excel.pages=pdf.getPageCount();
+    document.getElementById('xe-fn').textContent=f.name;
+    document.getElementById('xe-pg').textContent=S.pdf2excel.pages;
+    document.getElementById('xe-outname').value=f.name.replace(/\.pdf$/i,'');
+    document.getElementById('cfg-pdf2excel').style.display='block';
+    hideRB('pdf2excel');
+  });
+});
+
+async function extractPageTextItems(pdfDoc, pageNum){
+  // Returns array of {text, x, y, w, h, fontSize} for smart layout
+  const page = await pdfDoc.getPage(pageNum);
+  const vp = page.getViewport({scale:1});
+  const content = await page.getTextContent({normalizeWhitespace:false,disableCombineTextItems:false});
+  return {items: content.items, vp};
+}
+
+function detectTablesFromItems(items, vp){
+  // Group text items into rows by Y coordinate proximity
+  const rows = [];
+  const sorted = [...items].sort((a,b)=>b.transform[5]-a.transform[5]);
+  let curRowY = null, curRow = [];
+  const yThresh = 4;
+  for(const item of sorted){
+    const y = Math.round(item.transform[5]);
+    const text = item.str.trim();
+    if(!text) continue;
+    if(curRowY === null || Math.abs(y - curRowY) > yThresh){
+      if(curRow.length) rows.push([...curRow]);
+      curRow = [{text, x: item.transform[4], y, w: item.width, fontSize: item.height||item.transform[3]||10}];
+      curRowY = y;
+    } else {
+      curRow.push({text, x: item.transform[4], y, w: item.width, fontSize: item.height||item.transform[3]||10});
+    }
+  }
+  if(curRow.length) rows.push(curRow);
+  // Sort cells in each row by X
+  rows.forEach(r=>r.sort((a,b)=>a.x-b.x));
+  return rows;
+}
+
+async function doPdf2Excel(){
+  if(!S.pdf2excel.buf)return;
+  hideRB('pdf2excel');showP('pdf2excel');setP('pdf2excel',5,'Memuat PDF...');
+  try{
+    const loadTask = pdfjsLib.getDocument({data:S.pdf2excel.buf.slice(0)});
+    const pdfDoc = await loadTask.promise;
+    const totalPages = pdfDoc.numPages;
+    const pagesInp = document.getElementById('xe-pages').value.trim();
+    const targetPages = pagesInp ? parsePages(pagesInp, totalPages) : Array.from({length:totalPages},(_,i)=>i+1);
+    const outName = (document.getElementById('xe-outname').value.trim()||'output')+'.xlsx';
+    const mode = S.pdf2excel.mode;
+
+    const wb = XLSX.utils.book_new();
+
+    for(let pi=0; pi<targetPages.length; pi++){
+      const pageNum = targetPages[pi];
+      setP('pdf2excel', 5+Math.round(pi/targetPages.length*85), `Proses halaman ${pageNum}/${totalPages}...`);
+      await tick();
+
+      const {items, vp} = await extractPageTextItems(pdfDoc, pageNum);
+      const sheetName = `Halaman ${pageNum}`.substring(0,31);
+
+      if(mode === 'text'){
+        // Plain text mode: each line as a row
+        const rows = detectTablesFromItems(items, vp);
+        const data = rows.map(r=>r.map(c=>c.text));
+        // Auto-detect numbers
+        const dataTyped = data.map(row=>row.map(cell=>{
+          const n=parseFloat(cell.replace(/[,\.]/g,'').replace(/\./,''));
+          if(!isNaN(parseFloat(cell.replace(',','.'))) && /^[\d\s\.\,\-\+]+$/.test(cell.trim())) return {v:parseFloat(cell.replace(',','.')),t:'n'};
+          return cell;
+        }));
+        const ws = XLSX.utils.aoa_to_sheet(dataTyped);
+        // Style column widths
+        const maxCols = Math.max(...dataTyped.map(r=>r.length),1);
+        ws['!cols'] = Array.from({length:maxCols},()=>({wch:18}));
+        XLSX.utils.book_append_sheet(wb, ws, sheetName);
+      } else {
+        // Auto mode: smart table detection
+        const rows = detectTablesFromItems(items, vp);
+        if(!rows.length){ XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['(Halaman kosong)']]), sheetName); continue; }
+
+        // Detect if table-like: multiple rows with similar col count
+        const colCounts = rows.map(r=>r.length);
+        const maxC = Math.max(...colCounts);
+        const avgC = colCounts.reduce((a,b)=>a+b,0)/colCounts.length;
+        const isTable = maxC > 1 && avgC > 1.5;
+
+        let data;
+        if(isTable){
+          // Align columns by X position buckets
+          const allX = rows.flat().map(c=>c.x);
+          allX.sort((a,b)=>a-b);
+          // Cluster X positions
+          const buckets = [];
+          for(const x of allX){
+            const b = buckets.find(bk=>Math.abs(bk-x)<30);
+            if(b===undefined) buckets.push(x);
+          }
+          buckets.sort((a,b)=>a-b);
+          data = rows.map(row=>{
+            const cells = Array(buckets.length).fill('');
+            row.forEach(cell=>{
+              const bi = buckets.findIndex(bx=>Math.abs(bx-cell.x)===Math.min(...buckets.map(b=>Math.abs(b-cell.x))));
+              if(bi>=0) cells[bi] = (cells[bi]?cells[bi]+' ':'')+cell.text;
+            });
+            return cells;
+          });
+        } else {
+          data = rows.map(r=>[r.map(c=>c.text).join(' ')]);
+        }
+
+        // Convert numeric strings
+        const dataFinal = data.map(row=>row.map(cell=>{
+          if(typeof cell==='string'){
+            const clean = cell.replace(/\./g,'').replace(',','.');
+            if(/^-?[\d]+([.,]\d+)?$/.test(cell.trim())) return parseFloat(clean)||cell;
+          }
+          return cell;
+        }));
+
+        const ws = XLSX.utils.aoa_to_sheet(dataFinal);
+        const maxCols = Math.max(...dataFinal.map(r=>r.length),1);
+        ws['!cols'] = Array.from({length:maxCols},()=>({wch:20}));
+
+        // Freeze top row if looks like header
+        if(rows.length>2 && rows[0].length===rows[1].length){
+          ws['!freeze'] = {xSplit:0,ySplit:1};
+        }
+        XLSX.utils.book_append_sheet(wb, ws, sheetName);
+      }
+    }
+
+    // Add summary sheet
+    const summaryData = [
+      ['PDF Tools Pro — Hasil Konversi PDF → Excel'],
+      [''],
+      ['File Sumber', S.pdf2excel.file.name],
+      ['Total Halaman PDF', totalPages],
+      ['Halaman Dikonversi', targetPages.length],
+      ['Mode', mode==='auto'?'Deteksi Otomatis':'Teks per Halaman'],
+      ['Tanggal Konversi', new Date().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'})],
+      ['',''],
+      ['Sheet berisi data dari masing-masing halaman PDF.'],
+    ];
+    const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+    wsSummary['!cols']=[{wch:28},{wch:40}];
+    XLSX.utils.book_append_sheet(wb, wsSummary, 'Info');
+
+    setP('pdf2excel',95,'Membuat file Excel...');await tick();
+    const wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'});
+    const blob = new Blob([wbout], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+
+    setP('pdf2excel',100,'Selesai ✓');
+    document.getElementById('rb-pdf2excel-t').textContent=`${targetPages.length} halaman berhasil dikonversi ke Excel!`;
+    document.getElementById('rb-pdf2excel-i').textContent=`${wb.SheetNames.length-1} sheet data · ${fmt(blob.size)}`;
+    document.getElementById('dl-pdf2excel').onclick=()=>{
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=outName;a.click();URL.revokeObjectURL(url);
+    };
+    showRB('pdf2excel');
+  }catch(e){setP('pdf2excel',0,'Error: '+e.message);console.error(e);}
+}
+
+// ═══════════════════════════════════════════
+// PDF → WORD (.docx)
+// ═══════════════════════════════════════════
+S.pdf2word={file:null,buf:null,pages:0,mode:'rich'};
+function wdMode(m){
+  S.pdf2word.mode=m;
+  ['rich','plain','table'].forEach(x=>document.getElementById('wd-opt-'+x).classList.toggle('on',x===m));
+}
+setupDZ('dz-pdf2word','fi-pdf2word',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.pdf2word.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.pdf2word.buf=buf;
+    const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+    S.pdf2word.pages=pdf.getPageCount();
+    document.getElementById('wd-fn').textContent=f.name;
+    document.getElementById('wd-pg').textContent=S.pdf2word.pages;
+    document.getElementById('wd-outname').value=f.name.replace(/\.pdf$/i,'');
+    document.getElementById('cfg-pdf2word').style.display='block';
+    hideRB('pdf2word');
+  });
+});
+
+function escXml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');}
+
+function buildDocxFromPages(pages, fontName, mode){
+  // Build a proper .docx (Office Open XML) from scratch using JSZip
+  const font = fontName||'Calibri';
+
+  // Build document body XML
+  let bodyXml = '';
+  for(let pi=0;pi<pages.length;pi++){
+    const {pageNum, rows} = pages[pi];
+
+    // Page header
+    bodyXml += `<w:p><w:pPr><w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t>Halaman ${pageNum}</w:t></w:r></w:p>`;
+
+    if(mode==='table' || mode==='rich'){
+      // Check if content looks tabular
+      const colCounts = rows.map(r=>r.length);
+      const maxC = Math.max(...colCounts,1);
+      const avgC = colCounts.reduce((a,b)=>a+b,0)/(colCounts.length||1);
+      const isTable = maxC>2 && avgC>1.8;
+
+      if(isTable && mode==='table'){
+        // Render as Word table
+        bodyXml += `<w:tbl><w:tblPr><w:tblStyle w:val="TableGrid"/><w:tblW w:w="9360" w:type="dxa"/></w:tblPr><w:tblGrid>`;
+        const nc = maxC; const cw = Math.round(9360/nc);
+        for(let c=0;c<nc;c++) bodyXml+=`<w:gridCol w:w="${cw}"/>`;
+        bodyXml += `</w:tblGrid>`;
+        rows.forEach((row,ri)=>{
+          bodyXml+=`<w:tr>`;
+          for(let c=0;c<nc;c++){
+            const cell=row[c]||{text:''};
+            const isBold = ri===0 || (cell.fontSize && cell.fontSize>12);
+            bodyXml+=`<w:tc><w:tcPr><w:tcW w:w="${cw}" w:type="dxa"/></w:tcPr><w:p><w:r>`;
+            if(isBold) bodyXml+=`<w:rPr><w:b/><w:rFonts w:ascii="${font}" w:hAnsi="${font}"/></w:rPr>`;
+            else bodyXml+=`<w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}"/></w:rPr>`;
+            bodyXml+=`<w:t xml:space="preserve">${escXml(cell.text||'')}</w:t></w:r></w:p></w:tc>`;
+          }
+          bodyXml+=`</w:tr>`;
+        });
+        bodyXml+=`</w:tbl>`;
+      } else {
+        // Rich paragraphs with heading detection
+        rows.forEach(row=>{
+          const line = row.map(c=>c.text).join(' ').trim();
+          if(!line) return;
+          const avgFSize = row.reduce((a,c)=>a+(c.fontSize||10),0)/(row.length||1);
+          const isHeading = avgFSize>=14 || (avgFSize>=12 && row.length<=3 && line.length<80);
+          const isBold = avgFSize>=12;
+          // Detect list
+          const isList = /^[\-\•\*\–\►\▶\○\●]/.test(line);
+          if(isHeading){
+            const lvl = avgFSize>=16?1:avgFSize>=14?2:3;
+            bodyXml+=`<w:p><w:pPr><w:pStyle w:val="Heading${lvl}"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}"/></w:rPr><w:t>${escXml(line)}</w:t></w:r></w:p>`;
+          } else if(isList){
+            bodyXml+=`<w:p><w:pPr><w:numPr><w:ilvl w:val="0"/><w:numId w:val="1"/></w:numPr></w:pPr><w:r><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}"/></w:rPr><w:t xml:space="preserve">${escXml(line.replace(/^[\-\•\*\–\►\▶\○\●]\s*/,''))}</w:t></w:r></w:p>`;
+          } else {
+            bodyXml+=`<w:p><w:r><w:rPr>`;
+            if(isBold) bodyXml+=`<w:b/>`;
+            bodyXml+=`<w:rFonts w:ascii="${font}" w:hAnsi="${font}"/></w:rPr><w:t xml:space="preserve">${escXml(line)}</w:t></w:r></w:p>`;
+          }
+        });
+      }
+    } else {
+      // Plain text
+      rows.forEach(row=>{
+        const line=row.map(c=>c.text).join(' ').trim();
+        if(!line) return;
+        bodyXml+=`<w:p><w:r><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}"/></w:rPr><w:t xml:space="preserve">${escXml(line)}</w:t></w:r></w:p>`;
+      });
+    }
+
+    // Page break between pages (not last)
+    if(pi<pages.length-1){
+      bodyXml+=`<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+  }
+
+  const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+  xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
+  xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+  xmlns:w10="urn:schemas-microsoft-com:office:word"
+  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+  xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
+  xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
+  xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
+  xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
+  mc:Ignorable="w14 wp14">
+<w:body>${bodyXml}<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+
+  const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}"/><w:sz w:val="22"/></w:rPr></w:rPrDefault></w:docDefaults>
+<w:style w:type="paragraph" w:styleId="Normal"><w:name w:val="Normal"/><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}"/><w:sz w:val="22"/></w:rPr></w:style>
+<w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="240" w:after="60"/></w:pPr><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}"/><w:b/><w:sz w:val="36"/><w:color w:val="2F5496"/></w:rPr></w:style>
+<w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="200" w:after="40"/></w:pPr><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}"/><w:b/><w:sz w:val="28"/><w:color w:val="2F5496"/></w:rPr></w:style>
+<w:style w:type="paragraph" w:styleId="Heading3"><w:name w:val="heading 3"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="160" w:after="30"/></w:pPr><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}"/><w:b/><w:sz w:val="24"/><w:color w:val="1F3864"/></w:rPr></w:style>
+<w:style w:type="table" w:styleId="TableGrid"><w:name w:val="Table Grid"/><w:tblPr><w:tblBorders><w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:left w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:right w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto"/></w:tblBorders></w:tblPr></w:style>
+</w:styles>`;
+
+  const relXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/>
+</Relationships>`;
+
+  const numberingXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:abstractNum w:abstractNumId="0"><w:lvl w:ilvl="0"><w:start w:val="1"/><w:numFmt w:val="bullet"/><w:lvlText w:val="•"/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="720" w:hanging="360"/></w:pPr></w:lvl></w:abstractNum>
+<w:num w:numId="1"><w:abstractNumId w:val="0"/></w:num>
+</w:numbering>`;
+
+  const appXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>PDF Tools Pro</Application></Properties>`;
+
+  const coreXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/">
+<dc:creator>PDF Tools Pro</dc:creator><dcterms:created>${new Date().toISOString()}</dcterms:created></cp:coreProperties>`;
+
+  const contentTypesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
+<Override PartName="/word/numbering.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"/>
+<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
+<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
+</Types>`;
+
+  const relsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/>
+<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/>
+</Relationships>`;
+
+  const zip = new JSZip();
+  zip.file('[Content_Types].xml', contentTypesXml);
+  zip.file('_rels/.rels', relsXml);
+  zip.file('word/document.xml', documentXml);
+  zip.file('word/styles.xml', stylesXml);
+  zip.file('word/numbering.xml', numberingXml);
+  zip.file('word/_rels/document.xml.rels', relXml);
+  zip.file('docProps/app.xml', appXml);
+  zip.file('docProps/core.xml', coreXml);
+  return zip.generateAsync({type:'blob', mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+}
+
+async function doPdf2Word(){
+  if(!S.pdf2word.buf)return;
+  hideRB('pdf2word');showP('pdf2word');setP('pdf2word',5,'Memuat PDF...');
+  try{
+    const loadTask=pdfjsLib.getDocument({data:S.pdf2word.buf.slice(0)});
+    const pdfDoc=await loadTask.promise;
+    const totalPages=pdfDoc.numPages;
+    const pagesInp=document.getElementById('wd-pages').value.trim();
+    const targetPages=pagesInp?parsePages(pagesInp,totalPages):Array.from({length:totalPages},(_,i)=>i+1);
+    const outName=(document.getElementById('wd-outname').value.trim()||'output')+'.docx';
+    const fontName=document.getElementById('wd-font').value;
+    const mode=S.pdf2word.mode;
+
+    const allPages=[];
+    for(let pi=0;pi<targetPages.length;pi++){
+      const pageNum=targetPages[pi];
+      setP('pdf2word',5+Math.round(pi/targetPages.length*80),`Extract halaman ${pageNum}/${totalPages}...`);
+      await tick();
+      const {items}=await extractPageTextItems(pdfDoc,pageNum);
+      const rows=detectTablesFromItems(items,null);
+      allPages.push({pageNum,rows});
+    }
+
+    setP('pdf2word',88,'Membangun dokumen Word...');await tick();
+    const blob=await buildDocxFromPages(allPages,fontName,mode);
+
+    setP('pdf2word',100,'Selesai ✓');
+    document.getElementById('rb-pdf2word-t').textContent=`${targetPages.length} halaman berhasil dikonversi ke Word!`;
+    document.getElementById('rb-pdf2word-i').textContent=`Format: .docx · Font: ${fontName} · ${fmt(blob.size)}`;
+    document.getElementById('dl-pdf2word').onclick=()=>{
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=outName;a.click();URL.revokeObjectURL(url);
+    };
+    showRB('pdf2word');
+  }catch(e){setP('pdf2word',0,'Error: '+e.message);console.error(e);}
+}
+
+// ═══════════════════════════════════════════
+// PDF → POWERPOINT (.pptx)
+// ═══════════════════════════════════════════
+S.pdf2pptx={file:null,buf:null,pages:0,mode:'image'};
+function ppMode(m){
+  S.pdf2pptx.mode=m;
+  document.getElementById('pp-opt-img').classList.toggle('on',m==='image');
+  document.getElementById('pp-opt-text').classList.toggle('on',m==='text');
+}
+setupDZ('dz-pdf2pptx','fi-pdf2pptx',false,files=>{
+  const f=[...files].find(f=>f.name.toLowerCase().endsWith('.pdf'));if(!f)return;
+  S.pdf2pptx.file=f;
+  f.arrayBuffer().then(async buf=>{
+    S.pdf2pptx.buf=buf;
+    const pdf=await PDFLib.PDFDocument.load(buf,{ignoreEncryption:true});
+    S.pdf2pptx.pages=pdf.getPageCount();
+    document.getElementById('pp-fn').textContent=f.name;
+    document.getElementById('pp-pg').textContent=S.pdf2pptx.pages;
+    document.getElementById('pp-outname').value=f.name.replace(/\.pdf$/i,'');
+    document.getElementById('cfg-pdf2pptx').style.display='block';
+    hideRB('pdf2pptx');
+  });
+});
+
+async function renderPageToDataUrl(pdfDoc, pageNum, scale){
+  const page=await pdfDoc.getPage(pageNum);
+  const vp=page.getViewport({scale});
+  const canvas=document.createElement('canvas');
+  canvas.width=vp.width;canvas.height=vp.height;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,vp.width,vp.height);
+  await page.render({canvasContext:ctx,viewport:vp}).promise;
+  return {dataUrl:canvas.toDataURL('image/jpeg',0.92),w:vp.width,h:vp.height,origW:page.getViewport({scale:1}).width,origH:page.getViewport({scale:1}).height};
+}
+
+async function buildPptxFromPages(pages, sizeOpt, mode){
+  // Office Open XML .pptx from scratch
+  const sizeMap={
+    widescreen:{cx:9144000,cy:5143500,label:'16:9'},
+    standard:{cx:9144000,cy:6858000,label:'4:3'},
+    a4:{cx:6858000,cy:9676800,label:'A4'},
+  };
+  const sz=sizeMap[sizeOpt]||sizeMap.widescreen;
+  const zip=new JSZip();
+
+  const slideRels=[];
+  const slideFiles=[];
+
+  for(let i=0;i<pages.length;i++){
+    const {pageNum,dataUrl,w,h,origW,origH,rows}=pages[i];
+    const slideId=i+1;
+    const relsXml_entries=[];
+    let spTree='';
+
+    if(mode==='image' && dataUrl){
+      // Add image to zip
+      const imgId=`img${slideId}`;
+      const b64=dataUrl.split(',')[1];
+      const imgPath=`ppt/media/${imgId}.jpg`;
+      zip.file(imgPath,b64,{base64:true});
+
+      // Scale image to fill slide
+      const imgAspect=w/h;
+      const slideAspect=sz.cx/sz.cy;
+      let iw,ih,ix=0,iy=0;
+      if(imgAspect>slideAspect){ih=sz.cy;iw=Math.round(ih*imgAspect);ix=Math.round((sz.cx-iw)/2);}
+      else{iw=sz.cx;ih=Math.round(iw/imgAspect);iy=Math.round((sz.cy-ih)/2);}
+
+      relsXml_entries.push(`<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/${imgId}.jpg"/>`);
+      spTree+=`<p:sp><p:nvSpPr><p:cNvPr id="2" name="Title"/><p:cNvSpPr><a:spLocks noGrp="1"/></p:cNvSpPr><p:nvPr><p:ph type="title"/></p:nvPr></p:nvSpPr><p:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${sz.cx}" cy="0"/></a:xfrm></p:spPr><p:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:t></a:t></a:r></a:p></p:txBody></p:sp>`;
+      spTree+=`<p:pic><p:nvPicPr><p:cNvPr id="3" name="pic${slideId}"/><p:cNvPicPr><a:picLocks noChangeAspect="1"/></p:cNvPicPr><p:nvPr/></p:nvPicPr><p:blipFill><a:blip r:embed="rId1"/><a:stretch><a:fillRect/></a:stretch></p:blipFill><p:spPr><a:xfrm><a:off x="${ix}" y="${iy}"/><a:ext cx="${iw}" cy="${ih}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></p:spPr></p:pic>`;
+    } else {
+      // Text mode
+      relsXml_entries.push('');
+      const allText=(rows||[]).map(r=>r.map(c=>c.text||'').join(' ')).join('\n');
+      const escaped=escXml(allText.substring(0,3000));
+      spTree+=`<p:sp><p:nvSpPr><p:cNvPr id="2" name="Title"/><p:cNvSpPr><a:spLocks noGrp="1"/></p:cNvSpPr><p:nvPr><p:ph type="title"/></p:nvPr></p:nvSpPr><p:spPr/><p:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:rPr lang="id-ID" dirty="0"/><a:t>Halaman ${pageNum}</a:t></a:r></a:p></p:txBody></p:sp>`;
+      spTree+=`<p:sp><p:nvSpPr><p:cNvPr id="3" name="Content"/><p:cNvSpPr><a:spLocks noGrp="1"/></p:cNvSpPr><p:nvPr><p:ph idx="1"/></p:nvPr></p:nvSpPr><p:spPr/><p:txBody><a:bodyPr/><a:lstStyle/><a:p><a:r><a:rPr lang="id-ID" sz="1000" dirty="0"/><a:t xml:space="preserve">${escaped}</a:t></a:r></a:p></p:txBody></p:sp>`;
+    }
+
+    const slideXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+  xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+<p:cSld><p:bg><p:bgPr><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:effectLst/></p:bgPr></p:bg><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${sz.cx}" cy="${sz.cy}"/><a:chOff x="0" y="0"/><a:chExt cx="${sz.cx}" cy="${sz.cy}"/></a:xfrm></p:grpSpPr>${spTree}</p:spTree></p:cSld></p:sld>`;
+
+    const slideRelsXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+${relsXml_entries.filter(Boolean).join('\n')}
+<Relationship Id="rId99" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/>
+</Relationships>`;
+
+    zip.file(`ppt/slides/slide${slideId}.xml`, slideXml);
+    zip.file(`ppt/slides/_rels/slide${slideId}.xml.rels`, slideRelsXml);
+    slideFiles.push(`slide${slideId}.xml`);
+    slideRels.push(`<Relationship Id="rId${slideId+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/slide${slideId}.xml"/>`);
+  }
+
+  // Slide layout (blank)
+  const layoutXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="blank" preserve="1"><p:cSld name="Blank"><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/><a:chOff x="0" y="0"/><a:chExt cx="0" cy="0"/></a:xfrm></p:grpSpPr></p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr></p:sldLayout>`;
+  const layoutRelsXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" Target="../slideMasters/slideMaster1.xml"/></Relationships>`;
+  zip.file('ppt/slideLayouts/slideLayout1.xml', layoutXml);
+  zip.file('ppt/slideLayouts/_rels/slideLayout1.xml.rels', layoutRelsXml);
+
+  // Slide master
+  const masterXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sldMaster xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"><p:cSld><p:bg><p:bgRef idx="1001"><a:schemeClr val="bg1"/></p:bgRef></p:bg><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/><a:chOff x="0" y="0"/><a:chExt cx="0" cy="0"/></a:xfrm></p:grpSpPr></p:spTree></p:cSld><p:clrMap bg1="lt1" tx1="dk1" bg2="lt2" tx2="dk2" accent1="accent1" accent2="accent2" accent3="accent3" accent4="accent4" accent5="accent5" accent6="accent6" hlink="hlink" folHlink="folHlink"/><p:sldLayoutIdLst><p:sldLayoutId id="2147483649" r:id="rId1"/></p:sldLayoutIdLst><p:txStyles><p:titleStyle><a:lvl1pPr><a:defRPr lang="id-ID" sz="2400" b="1"/></a:lvl1pPr></p:titleStyle><p:bodyStyle><a:lvl1pPr><a:defRPr lang="id-ID" sz="1800"/></a:lvl1pPr></p:bodyStyle><p:otherStyle><a:lvl1pPr><a:defRPr lang="id-ID"/></a:lvl1pPr></p:otherStyle></p:txStyles></p:sldMaster>`;
+  const masterRelsXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/></Relationships>`;
+  zip.file('ppt/slideMasters/slideMaster1.xml', masterXml);
+  zip.file('ppt/slideMasters/_rels/slideMaster1.xml.rels', masterRelsXml);
+
+  // Presentation.xml
+  const slideIdList=slideFiles.map((s,i)=>`<p:sldId id="${i+256}" r:id="rId${i+2}"/>`).join('');
+  const presXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:presentation xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+  xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+  saveSubsetFonts="1">
+<p:sldMasterIdLst><p:sldMasterId id="2147483648" r:id="rId1"/></p:sldMasterIdLst>
+<p:sldIdLst>${slideIdList}</p:sldIdLst>
+<p:sldSz cx="${sz.cx}" cy="${sz.cy}" type="${sz.cx===9144000&&sz.cy===5143500?'screen16x9':sz.cx===9144000&&sz.cy===6858000?'screen4x3':'custom'}"/>
+<p:notesSz cx="6858000" cy="9144000"/>
+</p:presentation>`;
+
+  const presRelsXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" Target="slideMasters/slideMaster1.xml"/>
+${slideRels.join('\n')}
+</Relationships>`;
+
+  zip.file('ppt/presentation.xml', presXml);
+  zip.file('ppt/_rels/presentation.xml.rels', presRelsXml);
+
+  // App & Core props
+  zip.file('docProps/app.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>PDF Tools Pro</Application><Slides>${slideFiles.length}</Slides></Properties>`);
+  zip.file('docProps/core.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"><dc:creator>PDF Tools Pro</dc:creator><dcterms:created>${new Date().toISOString()}</dcterms:created></cp:coreProperties>`);
+  zip.file('_rels/.rels',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="ppt/presentation.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/></Relationships>`);
+
+  // Content types
+  const imgOverrides=slideFiles.map((_,i)=>`<Override PartName="/ppt/slides/slide${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/>`).join('');
+  zip.file('[Content_Types].xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Default Extension="jpg" ContentType="image/jpeg"/>
+<Default Extension="jpeg" ContentType="image/jpeg"/>
+<Default Extension="png" ContentType="image/png"/>
+<Override PartName="/ppt/presentation.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml"/>
+<Override PartName="/ppt/slideMasters/slideMaster1.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml"/>
+<Override PartName="/ppt/slideLayouts/slideLayout1.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml"/>
+${imgOverrides}
+<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
+<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
+</Types>`);
+
+  return zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.presentationml.presentation',compression:'DEFLATE',compressionOptions:{level:6}});
+}
+
+async function doPdf2Pptx(){
+  if(!S.pdf2pptx.buf)return;
+  hideRB('pdf2pptx');showP('pdf2pptx');setP('pdf2pptx',5,'Memuat PDF...');
+  try{
+    const loadTask=pdfjsLib.getDocument({data:S.pdf2pptx.buf.slice(0)});
+    const pdfDoc=await loadTask.promise;
+    const totalPages=pdfDoc.numPages;
+    const pagesInp=document.getElementById('pp-pages').value.trim();
+    const targetPages=pagesInp?parsePages(pagesInp,totalPages):Array.from({length:totalPages},(_,i)=>i+1);
+    const outName=(document.getElementById('pp-outname').value.trim()||'presentation')+'.pptx';
+    const scale=parseFloat(document.getElementById('pp-quality').value)||3;
+    const sizeOpt=document.getElementById('pp-size').value;
+    const mode=S.pdf2pptx.mode;
+
+    const allPages=[];
+    for(let pi=0;pi<targetPages.length;pi++){
+      const pageNum=targetPages[pi];
+      setP('pdf2pptx',5+Math.round(pi/targetPages.length*80),`Render halaman ${pageNum}/${totalPages}...`);
+      await tick();
+      if(mode==='image'){
+        const {dataUrl,w,h,origW,origH}=await renderPageToDataUrl(pdfDoc,pageNum,scale);
+        allPages.push({pageNum,dataUrl,w,h,origW,origH});
+      } else {
+        const {items}=await extractPageTextItems(pdfDoc,pageNum);
+        const rows=detectTablesFromItems(items,null);
+        allPages.push({pageNum,rows,dataUrl:null});
+      }
+    }
+
+    setP('pdf2pptx',87,'Membangun file PowerPoint...');await tick();
+    const blob=await buildPptxFromPages(allPages,sizeOpt,mode);
+
+    setP('pdf2pptx',100,'Selesai ✓');
+    document.getElementById('rb-pdf2pptx-t').textContent=`${targetPages.length} slide berhasil dibuat!`;
+    document.getElementById('rb-pdf2pptx-i').textContent=`Mode: ${mode==='image'?'Image HD':'Text'} · Ukuran: ${document.getElementById('pp-size').options[document.getElementById('pp-size').selectedIndex].text} · ${fmt(blob.size)}`;
+    document.getElementById('dl-pdf2pptx').onclick=()=>{
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=outName;a.click();URL.revokeObjectURL(url);
+    };
+    showRB('pdf2pptx');
+  }catch(e){setP('pdf2pptx',0,'Error: '+e.message);console.error(e);}
 }
 </script>
 </body>
